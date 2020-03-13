@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MPS</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
+
+<body>
+<h1>MPS список подстанций:</h1>
+<img th:src="@{/images/MPShome.png}"/>
+<form method="POST" th:action="@{/edit/current}" th:object="${current}">
+<!--<form th:object="${select}">-->
+    <!--<form method="POST" th:object="${design}">-->
+    <div th:each="tp : ${select}">
+        <input name="substations" type="checkbox" th:value="${tp.nameSubst}"/>
+        <span th:text="${tp.nameSubst}"> TPNAME </span>
+        <span>|</span>
+        <span th:text="${tp.IP}"> IP.IP </span>
+        <span>|</span>
+        <span th:text="${tp.zone}"> TPZONE </span><br/>
+    </div>
+    <div>
+        <button>Редактировать выбранную подстанцию</button>
+    </div>
+</form>
+</body>
+</html>
