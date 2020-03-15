@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class BaseTransformerSubst {
+public class ListTransformerSubst {
     private String name;
     private List<TransformerSubst> substations;
 }
