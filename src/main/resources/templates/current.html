@@ -7,15 +7,13 @@
 <body>
 <h1>MPS список Выбранных подстанций:</h1>
 <form method="POST" th:action="@{/edit/current}" th:object="${transformerSubst}">
-    <div th:each="tp : ${listsubst}">
-        <input name="substations" type="checkbox" th:value="${tp.nameSubst}"/>
-        <span th:text="${tp.nameSubst}"> TPNAME </span>
-        <span>|</span>
-        <span th:text="${tp.IP}"> IP.IP </span>
-        <span>|</span>
-        <span th:text="${tp.zone}"> TPZONE </span><br/>
-    </div>
     <div>
+        <span th:text="${transformerSubst.nameSubst}"> TPNAME </span>
+        <span>|</span>
+        <span th:text="${transformerSubst.IP}"> IP.IP </span>
+        <span>|</span>
+        <span th:text="${transformerSubst.zone}"> TPZONE </span><br/>
+
         <button>Редактировать выбранную подстанцию</button>
     </div>
 </form>

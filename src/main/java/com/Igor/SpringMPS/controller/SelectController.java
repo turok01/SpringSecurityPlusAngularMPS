@@ -6,10 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.AttributedString;
 import java.util.Arrays;
 import java.util.List;
@@ -29,14 +31,16 @@ public class SelectController {
 
         model.addAttribute("listsubst",substs);
         model.addAttribute("namesubst",new String());
+        model.addAttribute("transformerSubst", new TransformerSubst());
 
         //model.addAttribute("select",new BaseTransformerSubst());
         return "select";
     }
     @PostMapping
-    public String processSelect(Model model, TransformerSubst tp){
+    public String processSelect(Model model, TransformerSubst tp, HttpServletRequest request){
         log.info("Processing select: " + tp);
         model.addAttribute("transformerSubst",tp);
+        request.getSession().setAttribute("transformerSubst",tp);
         //return "redirect:/edit/current";
         return "redirect:/edit/current";
 /*-
