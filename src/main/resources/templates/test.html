@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Test title</title>
+</head>
+<body>
+<form method="POST" th:object="${model_string}">
+    <div th:each="simple_str : ${testlist}">
+        <input name="name_input" type="checkbox" th:value="${simple_str}"/>
+        <span th:text="${simple_str}"> </span><br/>
+    </div>
+    <Submit>
+        <button>Отправить</button>
+    </Submit>
+</form>
+</body>
+</html>
