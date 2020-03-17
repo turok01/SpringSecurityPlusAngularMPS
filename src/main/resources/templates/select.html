@@ -10,7 +10,7 @@
 <!--<form method="POST" th:action="@{/edit/current}" th:object="${listsubst}">-->
 <form method="POST" th:action="@{/select}" th:object="${transformerSubst}">
     <div th:each="transformerSubst : ${listsubst}">
-        <input name="substations" type="checkbox" class="radio" th:value="${transformerSubst}"/>
+        <input name="name" type="checkbox" class="radio" th:value="${transformerSubst.nameSubst}"/>
         <span th:text="${transformerSubst.nameSubst}"> TPNAME </span>
         <span>|</span>
         <span th:text="${transformerSubst.IP}"> IP.IP </span>

@@ -1,5 +1,6 @@
 package com.Igor.SpringMPS.controller;
 
+import com.Igor.SpringMPS.entities.TransformerSubst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,19 +15,20 @@ import java.util.List;
 @Controller
 @RequestMapping("/test")
 public class TestController {
-    public Model model;
+    //public Model model;
     @GetMapping
-    public String showTestForm(){
-        List<String> testlist = Arrays.asList("Str1","Str2","Str3");
-        this.model.addAttribute("testlist",testlist);
-        this.model.addAttribute("model_string","");
+    public String showTestForm(Model model){
+        List<String> testlist = Arrays.asList((String)"Str1",(String)"Str2",(String)"Str3");
+        model.addAttribute("testlist",testlist);
+        model.addAttribute("model_string",new String());
         log.info("Processing GETMapping /test: Add to model " + testlist);
         return "test";
     }
     @PostMapping
-    public String showTestPostForm(){
+    public String showTestPostForm(TransformerSubst transformerSubst){
         //model.addAttribute("strFromView_test",strFromView_test);
-        String str = (String) model.getAttribute("model_string");
+        log.info("Processing test Post: " + transformerSubst);
+        //String strtemp = (String) model.getAttribute("name_input");
         return "test_post_view";
         //return "none";
     }

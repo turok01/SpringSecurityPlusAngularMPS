@@ -1,6 +1,7 @@
 package com.Igor.SpringMPS.controller;
 
 import com.Igor.SpringMPS.ListTransformerSubst;
+import com.Igor.SpringMPS.TempTransformerSubst;
 import com.Igor.SpringMPS.entities.TransformerSubst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,12 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/edit")
 public class EditController {
     @GetMapping("/current")
-    public String newSubstForm(Model model, HttpServletRequest request){
+    public String newSubstForm(TempTransformerSubst tp){
         log.info("Processing EditController Get ");
         //model.addAttribute("listsubst",new ListTransformerSubst());
         //TransformerSubst tp = (TransformerSubst) model.getAttribute("transformerSubst");
-        TransformerSubst tp = (TransformerSubst) request.getSession().getAttribute("transformerSubst");
-        model.addAttribute("transformerSubst", tp );
+        //TransformerSubst tp = (TransformerSubst) request.getSession().getAttribute("transformerSubst");
+        //model.addAttribute("transformerSubst", tp );
         log.info("Processing /edit/current " + tp);
         return "current";
     }

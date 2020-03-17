@@ -1,6 +1,7 @@
 package com.Igor.SpringMPS.controller;
 
 import com.Igor.SpringMPS.ListTransformerSubst;
+import com.Igor.SpringMPS.TempTransformerSubst;
 import com.Igor.SpringMPS.entities.TransformerSubst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequestMapping("/select")
+//@SessionAttributes(types = TicketForm.class)
 public class SelectController {
     //private AttributedString model;
 
@@ -37,10 +39,8 @@ public class SelectController {
         return "select";
     }
     @PostMapping
-    public String processSelect(Model model, TransformerSubst tp, HttpServletRequest request){
+    public String processSelect(TempTransformerSubst tp){
         log.info("Processing select: " + tp);
-        model.addAttribute("transformerSubst",tp);
-        request.getSession().setAttribute("transformerSubst",tp);
         //return "redirect:/edit/current";
         return "redirect:/edit/current";
 /*-
