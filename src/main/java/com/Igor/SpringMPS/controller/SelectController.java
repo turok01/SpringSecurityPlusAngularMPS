@@ -58,6 +58,7 @@ public class SelectController {
     @PostMapping
     public String processSelect(@ModelAttribute("currentSubst") TransformerSubst tp,TempTransformerSubst tempTp){
         log.info("Processing select: " + tp);
+        tp
         tp.setNameSubst(tempTp.getName());
         //return "redirect:/edit/current";
         return "redirect:/edit/current";
