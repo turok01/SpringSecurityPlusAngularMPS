@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import javax.persistence.*;
 
 @Data
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 //@NoArgsConstructor //(access = AccessLevel.PRIVATE, force = true)
 @Entity
 @Table (name = "transformersubstations")
@@ -17,15 +17,11 @@ public class TransformerSubst {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+
     @Column (name="NAMESUBS")
     private String nameSubst;
     private String IP;
     private String zone;
-    /*public TransformerSubst(){};
-    public TransformerSubst(String nameSubst,String IP,String zone){
-        this.nameSubst = nameSubst;
-        this.IP = IP;
-        this.zone = zone;
-    };*/
+
 }
 

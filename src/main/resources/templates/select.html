@@ -9,10 +9,12 @@
 <img th:src="@{/images/MPShome.png}"/>
 
 <!--<form method="POST" th:action="@{/select}" th:object="${transformerSubst}">-->
-<form method="POST" th:action="@{/select}" th:object="${currentSubst}">
+<!--<form method="POST" th:action="@{/select}" th:object="${currentSubst}">-->
+<form method="POST" th:action="@{/select}" >
     <div th:each="transformerSubst : ${listsubst}">
         <!--<input name="name" type="checkbox" class="radio" th:value="${transformerSubst.nameSubst}"/>-->
-        <input name="name" type="checkbox" class="radio" th:value="${transformerSubst.id}"/>
+        <input name="id" type="checkbox" class="radio" th:value="${transformerSubst.id}"/>
+        <!--<input name="nameSubst" type="text" th:value="${transformerSubst.nameSubst}"/>-->
         <span th:text="${transformerSubst.nameSubst}"> TPNAME </span>
         <span>|</span>
         <span th:text="${transformerSubst.IP}"> IP.IP </span>

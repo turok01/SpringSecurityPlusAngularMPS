@@ -1,5 +1,6 @@
 package com.Igor.SpringMPS.controller;
 
+import javax.validation.Valid;
 import com.Igor.SpringMPS.ListTransformerSubst;
 import com.Igor.SpringMPS.TempTransformerSubst;
 import com.Igor.SpringMPS.data.TransformerRepository;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.*;
@@ -46,20 +48,27 @@ public class SelectController {
         );*/
         List<TransformerSubst> substs = new ArrayList<>();
         transformerRepo.findAll().forEach(i->substs.add(i));
-
+        Integer i = 0;
         model.addAttribute("listsubst",substs);
-        model.addAttribute("namesubst",new String());
+        //model.addAttribute("namesubst",new String());
+        //model.addAttribute("intsubst", i);
         //model.addAttribute("transformerSubst", new TransformerSubst());
+
         //model.addAttribute("currentSubst", new TransformerSubst());
+        model.addAttribute("intSubst", i);
 
         //model.addAttribute("select",new BaseTransformerSubst());
         return "select";
     }
     @PostMapping
-    public String processSelect(@ModelAttribute("currentSubst") TransformerSubst tp,TempTransformerSubst tempTp){
-        log.info("Processing select: " + tp);
-        tp
-        tp.setNameSubst(tempTp.getName());
+    //public String processSelect( @ModelAttribute("currentSubst")  TransformerSubst tp,TempTransformerSubst tempTp){
+    //public String processSelect( @ModelAttribute TransformerSubst tempTp){
+    public String processSelect( TransformerSubst tempTp){
+        log.info("Processing select: " + tempTp.toString());
+        //tempTp = convert(tempTp.getId());
+
+        //tp.setNameSubst(tempTp.getName());
+        //tp.setNameSubst(intsubst.toString());
         //return "redirect:/edit/current";
         return "redirect:/edit/current";
 /*-
