@@ -7,6 +7,30 @@
 <body>
 <h1>MPS список Выбранных подстанций:</h1>
 <form method="POST" th:action="@{/edit/current}" th:object="${currentSubst}">
+    <div th:if="${#fields.hasErrors()}">
+        <span class="validationError">
+        Please correct the problems below and resubmit.
+        </span>
+    </div>
+
+
+
+    <br/>
+    <label for="nameSubst">Название подстанции: </label>
+    <input type="text" th:field="*{nameSubst}"/>
+    <span class="validationError" th:if="${#fields.hasErrors('nameSubst')}"
+          th:errors="*{nameSubst}">Name Error</span>
+    <br/>
+    <label for="ip">IP-адрес подстанции: </label>
+    <input type="text" th:field="*{IP}"/>
+    <span class="validationError" th:if="${#fields.hasErrors('ip')}"
+          th:errors="*{IP}">Name Error</span>
+    <br/>
+    <label for="zone">Зона обслуживания (район): </label>
+    <input type="text" th:field="*{zone}"/>
+    <span class="validationError" th:if="${#fields.hasErrors('zone')}"
+          th:errors="*{zone}">Name Error</span>
+    <br/>
     <div>
         <span th:text="*{nameSubst}"> TPNAME </span>
         <span>|</span>

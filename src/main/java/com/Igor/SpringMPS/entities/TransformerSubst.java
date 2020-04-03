@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @RequiredArgsConstructor
@@ -17,10 +18,12 @@ public class TransformerSubst {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-
+    @NotBlank(message = "Необходимо указать название подстанции")
     @Column (name="NAMESUBS")
     private String nameSubst;
+    @NotBlank(message = "Необходимо указать IP подстанции")
     private String IP;
+    @NotBlank(message = "Необходимо указать зону обслуживания подстанции")
     private String zone;
 
 }

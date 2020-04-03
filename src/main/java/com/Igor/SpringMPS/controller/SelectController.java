@@ -50,7 +50,7 @@ public class SelectController {
         transformerRepo.findAll().forEach(i->substs.add(i));
         Integer i = 0;
         model.addAttribute("listsubst",substs);
-        //model.addAttribute("namesubst",new String());
+        //model.addAttribute("str_temp",new String());
         //model.addAttribute("intsubst", i);
         //model.addAttribute("transformerSubst", new TransformerSubst());
 
@@ -63,9 +63,11 @@ public class SelectController {
     @PostMapping
     //public String processSelect( @ModelAttribute("currentSubst")  TransformerSubst tp,TempTransformerSubst tempTp){
     //public String processSelect( @ModelAttribute TransformerSubst tempTp){
-    public String processSelect( TransformerSubst tempTp){
+    public String processSelect(TransformerSubst tempTp,Model model){
         log.info("Processing select: " + tempTp.toString());
-        //tempTp = convert(tempTp.getId());
+        model.addAttribute("currentSubst",tempTp);
+        model.addAttribute("id", tempTp.getId());
+        //tempTp = tempTp.getId();
 
         //tp.setNameSubst(tempTp.getName());
         //tp.setNameSubst(intsubst.toString());
