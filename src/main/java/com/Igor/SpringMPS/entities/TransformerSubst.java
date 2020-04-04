@@ -15,7 +15,8 @@ import javax.validation.constraints.NotBlank;
 @Table (name = "transformersubstations")
 public class TransformerSubst {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
     @NotBlank(message = "Необходимо указать название подстанции")

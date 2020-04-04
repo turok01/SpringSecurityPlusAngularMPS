@@ -42,19 +42,11 @@ public class SelectController {
 
     @GetMapping
     public String showSelectForm(@ModelAttribute("currentSubst") TransformerSubst tp, Model model){
-        /*List<TransformerSubst> substs = Arrays.asList(
-                new TransformerSubst("1","РП-1","192.168.0.1","РЭС-4"),
-                new TransformerSubst("2","РП-7","192.168.0.2","РЭС-4")
-        );*/
         List<TransformerSubst> substs = new ArrayList<>();
         transformerRepo.findAll().forEach(i->substs.add(i));
         Integer i = 0;
         model.addAttribute("listsubst",substs);
-        //model.addAttribute("str_temp",new String());
-        //model.addAttribute("intsubst", i);
-        //model.addAttribute("transformerSubst", new TransformerSubst());
 
-        //model.addAttribute("currentSubst", new TransformerSubst());
         model.addAttribute("intSubst", i);
 
         //model.addAttribute("select",new BaseTransformerSubst());
@@ -63,15 +55,13 @@ public class SelectController {
     @PostMapping
     //public String processSelect( @ModelAttribute("currentSubst")  TransformerSubst tp,TempTransformerSubst tempTp){
     //public String processSelect( @ModelAttribute TransformerSubst tempTp){
-    public String processSelect(TransformerSubst tempTp,Model model){
+    public String processSelect(TransformerSubst tempTp, Errors errors, Model model){
+        if(tempTp.getId()==null)
+            return "redirect:/select";
         log.info("Processing select: " + tempTp.toString());
         model.addAttribute("currentSubst",tempTp);
         model.addAttribute("id", tempTp.getId());
-        //tempTp = tempTp.getId();
 
-        //tp.setNameSubst(tempTp.getName());
-        //tp.setNameSubst(intsubst.toString());
-        //return "redirect:/edit/current";
         return "redirect:/edit/current";
 /*-
         public String getQuestion(ModelMap model, HttpServletRequest request) {

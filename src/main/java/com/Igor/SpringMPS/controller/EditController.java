@@ -12,6 +12,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Optional;
 
 @Slf4j
@@ -28,22 +29,24 @@ public class EditController {
     public String newSubstForm(@ModelAttribute("currentSubst") TransformerSubst tp, Errors errors,Model model){
         log.info("Processing EditController Get ");
         TransformerSubst transformerSubst = new TransformerSubst();
-        //if(tp.getId()!=null)
+        if(tp.getId()!=null)
             transformerSubst = transformerRepo.findById(tp.getId()).orElse(new TransformerSubst());
 
         model.addAttribute("currentSubst",transformerSubst);
-        //TransformerSubst tp = (TransformerSubst) model.getAttribute("transformerSubst");
+
         //TransformerSubst tp = (TransformerSubst) request.getSession().getAttribute("transformerSubst");
 
         log.info("Processing /edit/current " + tp);
         return "current";
     }
     @PostMapping("/current")
-    public String editSubstForm(ListTransformerSubst listSubst, Errors errors){
+    public String editSubstForm(@Valid @ModelAttribute("currentSubst") TransformerSubst tp, Errors errors, Model model){
         if (errors.hasErrors()) {
             return "current";
         }
-        log.info("Add new Subst Form " + listSubst);
+        log.info("Add new Subst Form " + tp);
+        transformerRepo.save(tp);
         return "current";
+        //return "successful";
     }
 }

@@ -2,16 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>MPS</title>
     <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
 <body>
-<h1>MPS.</h1>
-<h1>Выбранная подстанция:</h1>
 <form action="/select">
     <button>К общему списку</button>
-    <a th:href="@{/select}" id="another">На главную</a><br/>
+    <a th:href="@{/select}" id="on Main"></a><br/>
 </form>
-<form method="POST" th:action="@{/edit/current}" th:object="${currentSubst}">
+<form method="POST" th:action="@{/addnew}" th:object="${newSubst}">
 
     <div th:if="${#fields.hasErrors()}">
         <span class="validationError">
@@ -36,7 +36,7 @@
           th:errors="*{zone}">Zone Error</span>
     <br/>
     <div>
-        <button>Сохранить изменения</button>
+        <button>Добавить</button>
     </div>
 </form>
 </body>
