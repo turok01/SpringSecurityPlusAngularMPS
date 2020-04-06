@@ -22,7 +22,10 @@
         <span th:text="${transformerSubst.zone}"> TPZONE </span><br/>
     </div>
     <div>
-        <button>Редактировать выбранную подстанцию</button>
+        <button type="submit" name="edit" value="1">Редактировать выбранную подстанцию</button>
+    </div>
+    <div>
+        <button type="submit" name="delete" value="2">Удалить выбранную подстанцию</button>
     </div>
 </form>
 <form method="GET" th:action="@{/addnew}">

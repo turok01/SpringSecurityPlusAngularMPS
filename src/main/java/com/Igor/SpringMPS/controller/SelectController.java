@@ -52,7 +52,7 @@ public class SelectController {
         //model.addAttribute("select",new BaseTransformerSubst());
         return "select";
     }
-    @PostMapping
+    @PostMapping(params = "edit")
     //public String processSelect( @ModelAttribute("currentSubst")  TransformerSubst tp,TempTransformerSubst tempTp){
     //public String processSelect( @ModelAttribute TransformerSubst tempTp){
     public String processSelect(TransformerSubst tempTp, Errors errors, Model model){
@@ -70,5 +70,12 @@ public class SelectController {
             return "index";
         }
  */
+    }
+    @PostMapping(params="delete")
+    public String deleteForm(TransformerSubst transformerSubst){
+        if(transformerSubst.getId()==null)
+            return "redirect:/select";
+        transformerRepo.deleteById(transformerSubst.getId());
+        return "successful";
     }
 }
