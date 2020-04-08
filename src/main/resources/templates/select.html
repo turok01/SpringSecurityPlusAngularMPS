@@ -6,6 +6,11 @@
     <link rel="stylesheet" th:href="@{/styles.css}" />
 <body>
 <img th:src="@{/images/MPShome.png}"/>
+
+<form method="POST" th:action="@{/logout}">
+    <input type="submit" value="Logout">
+</form>
+
 <h1>MPS список подстанций:</h1>
 <label> Название|IP-адрес|Зона обслуживания</label>
 <!--<form method="POST" th:action="@{/select}" th:object="${transformerSubst}">-->
