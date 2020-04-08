@@ -4,8 +4,10 @@ import com.Igor.SpringMPS.ListTransformerSubst;
 import com.Igor.SpringMPS.TempTransformerSubst;
 import com.Igor.SpringMPS.data.TransformerRepository;
 import com.Igor.SpringMPS.entities.TransformerSubst;
+import com.Igor.SpringMPS.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -40,11 +42,14 @@ public class EditController {
         return "current";
     }
     @PostMapping("/current")
-    public String editSubstForm(@Valid @ModelAttribute("currentSubst") TransformerSubst tp, Errors errors, Model model){
+    public String editSubstForm(@Valid @ModelAttribute("currentSubst") TransformerSubst tp,
+                                Errors errors, Model model,
+                                @AuthenticationPrincipal User user){
         if (errors.hasErrors()) {
             return "current";
         }
         log.info("Add new Subst Form " + tp);
+        tp.setUser(user);
         transformerRepo.save(tp);
         return "current";
         //return "successful";
