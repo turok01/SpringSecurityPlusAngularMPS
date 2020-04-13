@@ -6,28 +6,30 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 @Data
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 //@NoArgsConstructor //(access = AccessLevel.PRIVATE, force = true)
 @Entity
 @Table (name = "transformersubstations")
-public class TransformerSubst {
+public class TransformerSubst implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
+    @NotBlank(message = "Необходимо указать название подстанции")
     @Column (name="NAMESUBS")
     private String nameSubst;
+    @NotBlank(message = "Необходимо указать IP подстанции")
     private String IP;
-
-
+    @NotBlank(message = "Необходимо указать зону обслуживания подстанции")
     private String zone;
-    /*public TransformerSubst(){};
-    public TransformerSubst(String nameSubst,String IP,String zone){
-        this.nameSubst = nameSubst;
-        this.IP = IP;
-        this.zone = zone;
-    };*/
+
+    @ManyToOne
+    private User user;
+
 }
 

@@ -5,22 +5,37 @@
     <title>MPS</title>
     <link rel="stylesheet" th:href="@{/styles.css}" />
 <body>
-<h1>MPS список подстанций:</h1>
 <img th:src="@{/images/MPShome.png}"/>
 
+<form method="POST" th:action="@{/logout}">
+    <input type="submit" value="Logout">
+</form>
+
+<h1>MPS список подстанций:</h1>
+<label> Название|IP-адрес|Зона обслуживания</label>
 <!--<form method="POST" th:action="@{/select}" th:object="${transformerSubst}">-->
-<form method="POST" th:action="@{/select}" th:object="${currentSubst}">
+<!--<form method="POST" th:action="@{/select}" th:object="${currentSubst}">-->
+<form method="POST" th:action="@{/select}" >
     <div th:each="transformerSubst : ${listsubst}">
         <!--<input name="name" type="checkbox" class="radio" th:value="${transformerSubst.nameSubst}"/>-->
-        <input name="name" type="checkbox" class="radio" th:value="${transformerSubst.id}"/>
-        <span th:text="${transformerSubst.nameSubst}"> TPNAME </span>
+        <input name="id" type="radio" th:value="${transformerSubst.id}"/>
+        <!--<input name="nameSubst" type="text" th:value="${transformerSubst.nameSubst}"/>-->
+        <span name="nameSubst" th:text="${transformerSubst.nameSubst}"> TPNAME </span>
         <span>|</span>
         <span th:text="${transformerSubst.IP}"> IP.IP </span>
         <span>|</span>
         <span th:text="${transformerSubst.zone}"> TPZONE </span><br/>
     </div>
     <div>
-        <button>Редактировать выбранную подстанцию</button>
+        <button type="submit" name="edit" value="1">Редактировать выбранную подстанцию</button>
+    </div>
+    <div>
+        <button type="submit" name="delete" value="2">Удалить выбранную подстанцию</button>
+    </div>
+</form>
+<form method="GET" th:action="@{/addnew}">
+    <div>
+        <button>Добавить новую подстанцию</button>
     </div>
 </form>
 </body>

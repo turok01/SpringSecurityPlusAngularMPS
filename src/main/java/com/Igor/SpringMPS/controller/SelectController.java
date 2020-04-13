@@ -1,5 +1,6 @@
 package com.Igor.SpringMPS.controller;
 
+import javax.validation.Valid;
 import com.Igor.SpringMPS.ListTransformerSubst;
 import com.Igor.SpringMPS.TempTransformerSubst;
 import com.Igor.SpringMPS.data.TransformerRepository;
@@ -8,11 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.text.AttributedString;
 import java.util.ArrayList;
@@ -40,31 +41,27 @@ public class SelectController {
     }
 
     @GetMapping
-    //public String showSelectForm(@ModelAttribute("currentSubst") TransformerSubst tp, Model model){
-    public String showSelectForm( Model model){
-        /*List<TransformerSubst> substs = Arrays.asList(
-                new TransformerSubst("1","РП-1","192.168.0.1","РЭС-4"),
-                new TransformerSubst("2","РП-7","192.168.0.2","РЭС-4")
-        );*/
+    public String showSelectForm(@ModelAttribute("currentSubst") TransformerSubst tp, Model model){
         List<TransformerSubst> substs = new ArrayList<>();
         transformerRepo.findAll().forEach(i->substs.add(i));
-
+        Integer i = 0;
         model.addAttribute("listsubst",substs);
-        model.addAttribute("namesubst",new String());
-        //model.addAttribute("transformerSubst", new TransformerSubst());
-        //model.addAttribute("currentSubst", new TransformerSubst());
+
+        model.addAttribute("intSubst", i);
 
         //model.addAttribute("select",new BaseTransformerSubst());
         return "select";
     }
-    @PostMapping
-    //public String processSelect(@Valid @ModelAttribute("currentSubst") TransformerSubst tp){//,TempTransformerSubst tempTp){
-    public String processSelect(TransformerSubst tp){//,TempTransformerSubst tempTp){
-        log.info("Processing select: " + tp);
-        Integer intId =  tp.getId();
-        intId++;
-        //tp.setNameSubst(tempTp.getName());
-        //return "redirect:/edit/current";
+    @PostMapping(params = "edit")
+    //public String processSelect( @ModelAttribute("currentSubst")  TransformerSubst tp,TempTransformerSubst tempTp){
+    //public String processSelect( @ModelAttribute TransformerSubst tempTp){
+    public String processSelect(TransformerSubst tempTp, Errors errors, Model model){
+        if(tempTp.getId()==null)
+            return "redirect:/select";
+        log.info("Processing select: " + tempTp.toString());
+        model.addAttribute("currentSubst",tempTp);
+        model.addAttribute("id", tempTp.getId());
+
         return "redirect:/edit/current";
 /*-
         public String getQuestion(ModelMap model, HttpServletRequest request) {
@@ -73,5 +70,12 @@ public class SelectController {
             return "index";
         }
  */
+    }
+    @PostMapping(params="delete")
+    public String deleteForm(TransformerSubst transformerSubst){
+        if(transformerSubst.getId()==null)
+            return "redirect:/select";
+        transformerRepo.deleteById(transformerSubst.getId());
+        return "successful";
     }
 }

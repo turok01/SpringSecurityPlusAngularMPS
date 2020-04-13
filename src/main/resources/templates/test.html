@@ -6,13 +6,15 @@
     <title>Test title</title>
 </head>
 <body>
-<form method="POST" th:action="@{/test}" th:object="${model_string}">
+<!--<form method="POST" th:action="@{/test}" th:object="${model_string}">-->
+<form method="POST" th:action="@{/test}" th:object="${temp_list}">
     <div th:each="simple_str : ${testlist}">
         <input name="name_input" type="checkbox" th:value="${simple_str}"/>
         <span th:text="${simple_str}"> </span><br/>
     </div>
 
         <button type="submit">Отправить</button>
+        <input type="submit" value="Send"/>
 
 </form>
 </body>
