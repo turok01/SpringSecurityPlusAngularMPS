@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.text.AttributedString;
 import java.util.ArrayList;
@@ -39,7 +40,8 @@ public class SelectController {
     }
 
     @GetMapping
-    public String showSelectForm(@ModelAttribute("currentSubst") TransformerSubst tp, Model model){
+    //public String showSelectForm(@ModelAttribute("currentSubst") TransformerSubst tp, Model model){
+    public String showSelectForm( Model model){
         /*List<TransformerSubst> substs = Arrays.asList(
                 new TransformerSubst("1","РП-1","192.168.0.1","РЭС-4"),
                 new TransformerSubst("2","РП-7","192.168.0.2","РЭС-4")
@@ -56,10 +58,12 @@ public class SelectController {
         return "select";
     }
     @PostMapping
-    public String processSelect(@ModelAttribute("currentSubst") TransformerSubst tp,TempTransformerSubst tempTp){
+    //public String processSelect(@Valid @ModelAttribute("currentSubst") TransformerSubst tp){//,TempTransformerSubst tempTp){
+    public String processSelect(TransformerSubst tp){//,TempTransformerSubst tempTp){
         log.info("Processing select: " + tp);
-        tp
-        tp.setNameSubst(tempTp.getName());
+        Integer intId =  tp.getId();
+        intId++;
+        //tp.setNameSubst(tempTp.getName());
         //return "redirect:/edit/current";
         return "redirect:/edit/current";
 /*-

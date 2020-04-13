@@ -20,6 +20,8 @@ public class TransformerSubst {
     @Column (name="NAMESUBS")
     private String nameSubst;
     private String IP;
+
+
     private String zone;
     /*public TransformerSubst(){};
     public TransformerSubst(String nameSubst,String IP,String zone){
