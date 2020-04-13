@@ -1,0 +1,14 @@
+server:
+  port: 8443
+  ssl:
+    key-store: file:///C:/Java/source/SpringMPS/mykeys.jks
+    key-store-password: letmein
+    key-password: letmein
+
+logging:
+  path: /logs/
+    file: MPS.log
+    level:
+      root: WARN
+      org.springframework.security: DEBUG
+
