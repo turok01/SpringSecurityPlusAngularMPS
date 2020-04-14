@@ -7,6 +7,10 @@ import com.Igor.SpringMPS.data.TransformerRepository;
 import com.Igor.SpringMPS.entities.TransformerSubst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -15,6 +19,7 @@ import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,9 +30,14 @@ import java.util.List;
 @RequestMapping("/select")
 //@SessionAttributes(types = TransformerSubst.class)
 @SessionAttributes(value = "currentSubst")
+@ConfigurationProperties(prefix="mps.substations")
 public class SelectController {
-    //private AttributedString model;
 
+    private int pageSize = 10;
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
 
     @ModelAttribute("currentSubst")
     public TransformerSubst createSubst(){
@@ -43,7 +53,14 @@ public class SelectController {
     @GetMapping
     public String showSelectForm(@ModelAttribute("currentSubst") TransformerSubst tp, Model model){
         List<TransformerSubst> substs = new ArrayList<>();
-        transformerRepo.findAll().forEach(i->substs.add(i));
+        Pageable pageable =  PageRequest.of(0,pageSize);
+        //transformerRepo.findAll().forEach(i->substs.add(i));
+
+
+        Page<TransformerSubst> page = null;
+        page = transformerRepo.findAll(pageable);
+        substs = page.getContent();
+
         Integer i = 0;
         model.addAttribute("listsubst",substs);
 
