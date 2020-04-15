@@ -24,6 +24,7 @@ import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -51,20 +52,35 @@ public class SelectController {
     }
 
     @GetMapping
-    public String showSelectForm(@ModelAttribute("currentSubst") TransformerSubst tp, Model model){
+    public String showSelectForm(@ModelAttribute("currentSubst") TransformerSubst tp, Model model,
+                                 @RequestParam("pageNumber") Optional<Integer> pageNumber ){
+
+        int currentPage = pageNumber.orElse(0);
+
         List<TransformerSubst> substs = new ArrayList<>();
-        Pageable pageable =  PageRequest.of(0,pageSize);
-        //transformerRepo.findAll().forEach(i->substs.add(i));
-
-
+        Pageable pageable =  PageRequest.of(currentPage, pageSize);
         Page<TransformerSubst> page = null;
         page = transformerRepo.findAll(pageable);
         substs = page.getContent();
-
-        Integer i = 0;
+        //transformerRepo.findAll().forEach(i->substs.add(i));
         model.addAttribute("listsubst",substs);
 
-        model.addAttribute("intSubst", i);
+        int prevPage = 0;
+        int nextPage = 0;
+        int totalPages = page.getTotalPages();
+        if (currentPage > 0)
+            prevPage = currentPage - 1;
+        if (totalPages - 1 > currentPage)
+            nextPage = currentPage + 1;
+        else
+            nextPage = currentPage;
+        model.addAttribute("prevpage", prevPage);
+        model.addAttribute("nextpage", nextPage);
+        model.addAttribute("currentpage", currentPage + 1);
+        model.addAttribute("totalpages",totalPages);
+
+        long totalSubst = page.getTotalElements();
+        model.addAttribute("totalSubst",totalSubst);
 
         //model.addAttribute("select",new BaseTransformerSubst());
         return "select";
