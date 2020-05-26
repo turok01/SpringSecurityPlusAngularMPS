@@ -29,3 +29,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Angular dependencies
+/MPS-ui/node_modules
+
+# e2e
+/MPS-ui/e2e/*.js
+/MPS-ui/e2e/*.map
