@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -37,9 +39,16 @@ public class RestSelectController {
         return transformerRepo.findAll(page).getContent();
     }
     @GetMapping("/{id}")
-    public TransformerSubst substById(@PathVariable("id") Integer id){
+    public ResponseEntity<TransformerSubst> substById(@PathVariable("id") Integer id){
+        Optional<TransformerSubst> optionalTransformerSubst = transformerRepo.findById(id);
+        if(optionalTransformerSubst.isPresent())
+            return new ResponseEntity<>(optionalTransformerSubst.get(),HttpStatus.OK);
+        else
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+    /*public TransformerSubst substById(@PathVariable("id") Integer id){
         Optional<TransformerSubst> optionalTransformerSubst = transformerRepo.findById(id);
         return optionalTransformerSubst.isPresent() ? optionalTransformerSubst.get() : null;
 
-    }
+    }*/
 }
