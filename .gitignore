@@ -16,6 +16,9 @@ target/
 ###Slf4j Log####
 .gz
 
+###Hibernate Log####
+.log
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
