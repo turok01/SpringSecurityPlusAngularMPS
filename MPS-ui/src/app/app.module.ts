@@ -7,13 +7,15 @@ import {HttpClientModule} from "@angular/common/http";
 import { SubstListComponent } from './subst-list/subst-list.component';
 import { RecentComponent } from './recent/recent.component';
 import { ByIdComponent } from './by-id/by-id.component';
+import {UpdateComponent} from "./update/update.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     SubstListComponent,
     RecentComponent,
-    ByIdComponent
+    ByIdComponent,
+    UpdateComponent
   ],
   imports: [
     BrowserModule,

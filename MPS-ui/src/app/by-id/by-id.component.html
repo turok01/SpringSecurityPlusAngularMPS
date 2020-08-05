@@ -11,11 +11,15 @@
   </tr>
   <tbody>
   <tr >
-    <td>{{substs.nameSubst}}</td>
-    <td>{{substs.ip}}</td>
-    <td>{{substs.zone}}</td>
-    <td>{{substs.user?.username}}</td>
+    <td>{{subst.nameSubst}}</td>
+    <td>{{subst.ip}}</td>
+    <td>{{subst.zone}}</td>
+    <td>{{subst.user?.username}}</td>
 
   </tr>
   </tbody>
 </table>
+<button class ="GFG" [routerLink]="'/rest/update/' + subst.id"> Редактировать {{subst.id}}</button>
+<!--<button class ="GFG" [routerLink]="'/rest/update/' + boxSubst.value"> Сохранить изменения {{boxSubst.value}}</button>
+-->
+

@@ -10,7 +10,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class ByIdComponent implements OnInit {
 
-  substs : Subst;
+  subst : Subst;
   id : number;
 
   constructor(private httpService:HttpService, private activatedRoute: ActivatedRoute) { }
@@ -18,7 +18,7 @@ export class ByIdComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.activatedRoute.snapshot.params['id']
     this.httpService.getbyId(this.id).subscribe(
-      data=>this.substs = data)
+      data=>this.subst = data)
   }
 
 }
