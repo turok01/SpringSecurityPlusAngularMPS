@@ -8,6 +8,7 @@ import { SubstListComponent } from './subst-list/subst-list.component';
 import { RecentComponent } from './recent/recent.component';
 import { ByIdComponent } from './by-id/by-id.component';
 import {UpdateComponent} from "./update/update.component";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {UpdateComponent} from "./update/update.component";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

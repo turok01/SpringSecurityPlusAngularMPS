@@ -26,8 +26,10 @@ export class UpdateComponent implements OnInit {
     this.id = this.activatedRoute.snapshot.params['id']
     this.httpService.getbyId(this.id).subscribe(
       data=>this.subst = data)
+    console.log('update OnInit working')
   }
   onSubmit(){
+    this.subst.nameSubst="ТП-6"
     this.httpClient.patch(
       'https://localhost:8443/rest/' + this.id,this.model,{
         headers: new HttpHeaders().set('Content-type','application/json'),
@@ -48,6 +50,10 @@ export class UpdateComponent implements OnInit {
         headers: new HttpHeaders().set('Content-type','application/json'),
       }).subscribe(data=>this.subst=data)
       */
+  }
+  saveUpdate(){
+    this.subst.nameSubst="ТП-6"
+    console.log('Save Update working')
   }
 
 }

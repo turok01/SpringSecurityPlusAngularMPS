@@ -24,3 +24,15 @@
   <!--<button class ="GFG" [routerLink]="'/rest/update/' + subst.id"> Сохранить {{subst.id}}</button>
   -->
 </form>
+<div class="class1">
+  <div class="form-group">
+    <label>id</label>
+    <input class="form-control" name="title"
+           [(ngModel)]="subst.nameSubst" #nameSubst="ngModel" />
+  </div>
+  <div class="form-group">
+    <button (click)="saveUpdate()">
+      изменить
+    </button>
+  </div>
+</div>
