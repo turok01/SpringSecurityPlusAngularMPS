@@ -46,7 +46,24 @@ public class RestSelectController {
         else
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
-    @PatchMapping (path="/{editByName}", consumes="application/json")
+
+    @PutMapping ("/{editByName}")
+    public TransformerSubst putSubst(@PathVariable("editByName") Integer id,
+                                     @RequestBody TransformerSubst patch){
+        TransformerSubst transformerSubst = transformerRepo.findById(id).get();
+        if (patch.getNameSubst() != null){
+            transformerSubst.setNameSubst(patch.getNameSubst());
+        }
+        if (patch.getIP() != null){
+            transformerSubst.setIP(patch.getIP());
+        }
+        if (patch.getZone() != null){
+            transformerSubst.setZone(patch.getZone());
+        }
+        return transformerRepo.save(transformerSubst);
+    }
+    //@PatchMapping (path="/{editByName}", consumes="application/json")
+    @PatchMapping ("/{editByName}")
     public TransformerSubst patchSubst(@PathVariable("editByName") Integer id,
                                        @RequestBody TransformerSubst patch){
         TransformerSubst transformerSubst = transformerRepo.findById(id).get();

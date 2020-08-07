@@ -13,7 +13,7 @@ import {HttpService} from "../service/http.service";
 export class UpdateComponent implements OnInit {
 
   model={
-    nameSubst: '',
+    nameSubst: 'ТП-000',
     ip: '',
     zone: ''
   }
@@ -29,9 +29,10 @@ export class UpdateComponent implements OnInit {
     console.log('update OnInit working')
   }
   onSubmit(){
-    this.subst.nameSubst="ТП-6"
+    this.subst.nameSubst="ТП-6S"
     this.httpClient.patch(
       'https://localhost:8443/rest/' + this.id,this.model,{
+      //'https://localhost:8443/rest/' + this.id,this.model,{
         headers: new HttpHeaders().set('Content-type','application/json'),
       }).subscribe(res => {
                     console.log('received ok response from patch request');
@@ -52,7 +53,18 @@ export class UpdateComponent implements OnInit {
       */
   }
   saveUpdate(){
-    this.subst.nameSubst="ТП-6"
+    const myHeaders = new HttpHeaders().set("Content-Type", "application/json");
+    const body = {nameSubst: this.subst.nameSubst, zone: this.subst.zone};
+    this.subst.nameSubst="ТП-6u";
+    this.httpClient.patch(
+      'https://localhost:8443/rest/' + this.id, body ,{headers: myHeaders}).subscribe(res => {
+        console.log('received ok response from patch request');
+      },
+      error => {
+        console.error('There was an error during the request');
+        console.log(error);
+      }
+    );
     console.log('Save Update working')
   }
 

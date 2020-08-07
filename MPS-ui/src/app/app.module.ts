@@ -10,6 +10,7 @@ import { ByIdComponent } from './by-id/by-id.component';
 import {UpdateComponent} from "./update/update.component";
 import {FormsModule} from "@angular/forms";
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,6 +18,7 @@ import {FormsModule} from "@angular/forms";
     RecentComponent,
     ByIdComponent,
     UpdateComponent
+
   ],
   imports: [
     BrowserModule,
