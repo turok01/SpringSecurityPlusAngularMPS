@@ -29,9 +29,10 @@ export class UpdateComponent implements OnInit {
     console.log('update OnInit working')
   }
   onSubmit(){
+    const body = {nameSubst: this.subst.nameSubst, zone: this.subst.zone};
     this.subst.nameSubst="ТП-6S"
     this.httpClient.patch(
-      'https://localhost:8443/rest/' + this.id,this.model,{
+      'https://localhost:8443/rest/' + this.id,body,{
       //'https://localhost:8443/rest/' + this.id,this.model,{
         headers: new HttpHeaders().set('Content-type','application/json'),
       }).subscribe(res => {
