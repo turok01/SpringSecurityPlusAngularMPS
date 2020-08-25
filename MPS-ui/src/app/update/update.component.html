@@ -20,20 +20,29 @@
   </tbody>
 </table>
 <form (ngSubmit)="onSubmit()">
-  <button> Сохранить {{subst.id}}</button>
+  <button> Редактировать подстанцию {{subst.id}}</button>
   <!--<button class ="GFG" [routerLink]="'/rest/update/' + subst.id"> Сохранить {{subst.id}}</button>
   -->
 </form>
 <div class="class1">
   <div class="form-group">
-    <label>id</label>
-    <input class="form-control" name="title"
+    <label>Наименование </label>
+    <input class="form-control" name="name"
            [(ngModel)]="subst.nameSubst" />
-
+  </div>
+  <div class="form-group">
+    <label>IP-адрес </label>
+    <input class="form-control" name="IP"
+           [(ngModel)]="subst.ip" />
+  </div>
+  <div class="form-group">
+    <label>Принадлеженость </label>
+    <input class="form-control" name="zone"
+           [(ngModel)]="subst.zone" />
   </div>
   <div class="form-group">
     <button (click)="saveUpdate()">
-      изменить
+      Изменить имя
     </button>
   </div>
 </div>

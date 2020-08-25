@@ -46,19 +46,23 @@ public class RestSelectController {
         else
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
+    @GetMapping("/add")
+    public Collection<TransformerSubst> restSelectAddTemp(){
+        return transformerRepo.findAll();
+    }
 
     @PutMapping ("/{editByName}")
     public TransformerSubst putSubst(@PathVariable("editByName") Integer id,
-                                     @RequestBody TransformerSubst patch){
+                                     @RequestBody TransformerSubst putSubst){
         TransformerSubst transformerSubst = transformerRepo.findById(id).get();
-        if (patch.getNameSubst() != null){
-            transformerSubst.setNameSubst(patch.getNameSubst());
+        if (putSubst.getNameSubst() != null){
+            transformerSubst.setNameSubst(putSubst.getNameSubst());
         }
-        if (patch.getIP() != null){
-            transformerSubst.setIP(patch.getIP());
+        if (putSubst.getIP() != null){
+            transformerSubst.setIP(putSubst.getIP());
         }
-        if (patch.getZone() != null){
-            transformerSubst.setZone(patch.getZone());
+        if (putSubst.getZone() != null){
+            transformerSubst.setZone(putSubst.getZone());
         }
         return transformerRepo.save(transformerSubst);
     }

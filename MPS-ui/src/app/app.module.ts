@@ -9,6 +9,7 @@ import { RecentComponent } from './recent/recent.component';
 import { ByIdComponent } from './by-id/by-id.component';
 import {UpdateComponent} from "./update/update.component";
 import {FormsModule} from "@angular/forms";
+import { AddComponent } from './add/add.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {FormsModule} from "@angular/forms";
     SubstListComponent,
     RecentComponent,
     ByIdComponent,
-    UpdateComponent
+    UpdateComponent,
+    AddComponent
 
   ],
   imports: [
