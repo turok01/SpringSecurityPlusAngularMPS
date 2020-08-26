@@ -14,6 +14,7 @@
 <button class ="GFG" [routerLink]="'/rest/recent'"> Показать последние</button>
 <button class ="GFG" [routerLink]="'/rest/' + boxSubst.value"> Показать {{boxSubst.value}}</button>
 <button class="GFG" [routerLink]="'/rest/add'"> Добавить</button>
+
 <input #boxSubst (keyup)="1">
 
 <router-outlet></router-outlet>

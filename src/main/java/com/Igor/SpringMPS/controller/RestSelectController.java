@@ -46,9 +46,10 @@ public class RestSelectController {
         else
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
-    @GetMapping("/add")
-    public Collection<TransformerSubst> restSelectAddTemp(){
-        return transformerRepo.findAll();
+    @PostMapping(path="/add", consumes="application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public TransformerSubst addSubst(@RequestBody TransformerSubst postSubst){
+        return transformerRepo.save(postSubst);
     }
 
     @PutMapping ("/{editByName}")
