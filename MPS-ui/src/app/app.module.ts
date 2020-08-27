@@ -8,7 +8,7 @@ import { SubstListComponent } from './subst-list/subst-list.component';
 import { RecentComponent } from './recent/recent.component';
 import { ByIdComponent } from './by-id/by-id.component';
 import {UpdateComponent} from "./update/update.component";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { AddComponent } from './add/add.component';
 
 
@@ -26,7 +26,8 @@ import { AddComponent } from './add/add.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
