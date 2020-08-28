@@ -1,7 +1,7 @@
 <p>add works!</p>
 
 
-<form [formGroup]="myForm" novalidate (ngSubmit)="buttonAdd()">
+<form [formGroup]="myForm" novalidate (ngSubmit)="onSubmit()">
 <table border="1">
   <thead></thead>
   <tr>
@@ -23,14 +23,18 @@
     </td>
     <td>
       <div class="form-group">
-        <input class="form-control" name="IP"
-               [(ngModel)]="subst.ip" />
+        <input class="form-control" name="ip" formControlName="ip"/>
+               <!--[(ngModel)]="subst.ip" />-->
+        <div class="alert alert-danger"
+             *ngIf="myForm.controls['ip'].invalid && myForm.controls['ip'].touched">
+          Не указано наименование
+        </div>
       </div>
     </td>
     <td>
       <div class="form-group">
-        <input class="form-control" name="zone"
-               [(ngModel)]="subst.zone" />
+        <input class="form-control" name="zone" formControlName="zone"/>
+               <!--[(ngModel)]="subst.zone" />-->
       </div>
     </td>
 
@@ -38,9 +42,14 @@
   </tbody>
 </table>
 
-<div class="form-group">
+<!--<div class="form-group">
   <button (click)="buttonAdd()">
     Добавить
+  </button>
+</div>-->
+<div class="form-group">
+  <button class="btn btn-default" [disabled]="myForm.invalid">
+    Отправить
   </button>
 </div>
 </form>

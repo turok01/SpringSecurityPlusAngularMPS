@@ -69,5 +69,13 @@ export class UpdateComponent implements OnInit {
     );
     console.log('Save Update working')
   }
+  delete(){
+    //const myHeaders = new HttpHeaders().set("Content-Type", "application/json");
+    this.httpClient.delete('https://localhost:8443/rest/' + this.id).subscribe(
+      res=>{console.log('received ok response from DELETE request');},
+      error=>{console.log('There was an error during the DELETE request');
+                    console.log(error);}
+    );
+  }
 
 }

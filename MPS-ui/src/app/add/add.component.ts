@@ -20,8 +20,9 @@ export class AddComponent implements OnInit {
   constructor(private httpClient:HttpClient, private httpService:HttpService,  private activatedRoute: ActivatedRoute) {
     this.myForm = new FormGroup({
         "nameSubst": new FormControl("ТП-", Validators.required),
-        "IP": new FormControl("192.168.1.1", [Validators.required,
-                                                  Validators.pattern("{0-255}")]),
+        "ip": new FormControl("192.168.1.1", [Validators.required//,
+          //                                          Validators.pattern("{0-255}")
+          ]),
         "zone" : new FormControl("", Validators.required)
     });
   }
@@ -33,13 +34,16 @@ export class AddComponent implements OnInit {
     //  data=>this.subst = data);
     console.log("add component log")
   }
-  onSubmit():void{
 
-  }
-  buttonAdd(): void{
+  //onSubmit():void{
+  //}
+
+  onSubmit(): void{
     const myHeaders = new HttpHeaders().set("Content-Type", "application/json");
-    const body1 = { nameSubst: this.myForm.get('nameSubst')};
-    const body = {nameSubst: this.subst.nameSubst, zone: this.subst.zone};
+    //const body1 = { nameSubst: this.myForm.get('nameSubst')};
+    //const body = {nameSubst: this.subst.nameSubst, zone: this.subst.zone};
+    this.subst = this.myForm.value as Subst;
+    this.subst.user=null;
     this.httpClient.post(
       'https://localhost:8443/rest/add', this.subst ,{headers: myHeaders}).subscribe(res => {
         console.log('received ok response from post request');

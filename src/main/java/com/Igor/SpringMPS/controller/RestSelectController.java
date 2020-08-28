@@ -3,7 +3,7 @@ package com.Igor.SpringMPS.controller;
 import com.Igor.SpringMPS.data.TransformerRepository;
 import com.Igor.SpringMPS.entities.TransformerSubst;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import java.util.Collection;
 
 @Slf4j
 @CrossOrigin(origins = "http://localhost:4200")
@@ -51,9 +48,16 @@ public class RestSelectController {
     public TransformerSubst addSubst(@RequestBody TransformerSubst postSubst){
         return transformerRepo.save(postSubst);
     }
+    @DeleteMapping(path="/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteSubst(@PathVariable("id") Integer id){
+        try{
+            transformerRepo.deleteById(id);
+        } catch (EmptyResultDataAccessException e){}
+    }
 
-    @PutMapping ("/{editByName}")
-    public TransformerSubst putSubst(@PathVariable("editByName") Integer id,
+    @PutMapping ("/{editById}")
+    public TransformerSubst putSubst(@PathVariable("editById") Integer id,
                                      @RequestBody TransformerSubst putSubst){
         TransformerSubst transformerSubst = transformerRepo.findById(id).get();
         if (putSubst.getNameSubst() != null){
@@ -68,8 +72,8 @@ public class RestSelectController {
         return transformerRepo.save(transformerSubst);
     }
     //@PatchMapping (path="/{editByName}", consumes="application/json")
-    @PatchMapping ("/{editByName}")
-    public TransformerSubst patchSubst(@PathVariable("editByName") Integer id,
+    @PatchMapping ("/{editById}")
+    public TransformerSubst patchSubst(@PathVariable("editById") Integer id,
                                        @RequestBody TransformerSubst patch){
         TransformerSubst transformerSubst = transformerRepo.findById(id).get();
         if (patch.getNameSubst() != null){
