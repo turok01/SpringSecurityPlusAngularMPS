@@ -30,8 +30,8 @@ export class UpdateComponent implements OnInit {
   }
   onSubmit(){
     this.subst.nameSubst="ТП-6S"
-    this.httpClient.patch(
-      'https://localhost:8443/rest/' + this.id,this.model,{
+    this.httpClient.put(
+      'https://localhost:8443/rest/' + this.id, JSON.stringify(this.subst),{
       //'https://localhost:8443/rest/' + this.id,this.model,{
         headers: new HttpHeaders().set('Content-type','application/json'),
       }).subscribe(res => {

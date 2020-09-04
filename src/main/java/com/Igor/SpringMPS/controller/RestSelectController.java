@@ -49,22 +49,23 @@ public class RestSelectController {
 
     @PutMapping ("/{editByName}")
     public TransformerSubst putSubst(@PathVariable("editByName") Integer id,
-                                     @RequestBody TransformerSubst patch){
+                                     @RequestBody TransformerSubst put){
         TransformerSubst transformerSubst = transformerRepo.findById(id).get();
-        if (patch.getNameSubst() != null){
-            transformerSubst.setNameSubst(patch.getNameSubst());
+        if (put.getNameSubst() != null){
+            transformerSubst.setNameSubst(put.getNameSubst());
         }
-        if (patch.getIP() != null){
-            transformerSubst.setIP(patch.getIP());
+        if (put.getIP() != null){
+            transformerSubst.setIP(put.getIP());
         }
-        if (patch.getZone() != null){
-            transformerSubst.setZone(patch.getZone());
+        if (put.getZone() != null){
+            transformerSubst.setZone(put.getZone());
         }
         return transformerRepo.save(transformerSubst);
     }
-    //@PatchMapping (path="/{editByName}", consumes="application/json")
-    @PatchMapping ("/{editByName}")
-    public TransformerSubst patchSubst(@PathVariable("editByName") Integer id,
+    @PatchMapping (path="/{editByName}", consumes="application/json")
+    //@PatchMapping ("/{editByName}")
+    //public TransformerSubst patchSubst(@PathVariable("editByName") Integer id,
+    public ResponseEntity<?> patchSubst(@PathVariable("editByName") Integer id,
                                        @RequestBody TransformerSubst patch){
         TransformerSubst transformerSubst = transformerRepo.findById(id).get();
         if (patch.getNameSubst() != null){
@@ -76,7 +77,9 @@ public class RestSelectController {
         if (patch.getZone() != null){
             transformerSubst.setZone(patch.getZone());
         }
-        return transformerRepo.save(transformerSubst);
+        //return transformerRepo.save(transformerSubst);
+        transformerRepo.save(transformerSubst);
+        return ResponseEntity.ok("resource patched");
     }
 
     /*public TransformerSubst substById(@PathVariable("id") Integer id){

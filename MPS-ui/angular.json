@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "MPS-ui"
+    }
+  },
+  "defaultProject": "MPS-ui",
+  "cli": {
+    "analytics": false
+  }
 }
