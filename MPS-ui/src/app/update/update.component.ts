@@ -29,9 +29,11 @@ export class UpdateComponent implements OnInit {
     console.log('update OnInit working')
   }
   onSubmit(){
-    this.subst.nameSubst="ТП-6S"
+    const body = {nameSubst: this.subst.nameSubst, zone: this.subst.zone, ip: this.subst.ip};
+
+    //this.httpClient.patch(
     this.httpClient.put(
-      'https://localhost:8443/rest/' + this.id, JSON.stringify(this.subst),{
+      'https://localhost:8443/rest/' + this.id,body,{
       //'https://localhost:8443/rest/' + this.id,this.model,{
         headers: new HttpHeaders().set('Content-type','application/json'),
       }).subscribe(res => {
@@ -66,6 +68,14 @@ export class UpdateComponent implements OnInit {
       }
     );
     console.log('Save Update working')
+  }
+  delete(){
+    //const myHeaders = new HttpHeaders().set("Content-Type", "application/json");
+    this.httpClient.delete('https://localhost:8443/rest/' + this.id).subscribe(
+      res=>{console.log('received ok response from DELETE request');},
+      error=>{console.log('There was an error during the DELETE request');
+                    console.log(error);}
+    );
   }
 
 }

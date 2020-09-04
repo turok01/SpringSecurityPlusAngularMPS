@@ -3,7 +3,7 @@ package com.Igor.SpringMPS.controller;
 import com.Igor.SpringMPS.data.TransformerRepository;
 import com.Igor.SpringMPS.entities.TransformerSubst;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import java.util.Collection;
 
 @Slf4j
 @CrossOrigin(origins = "http://localhost:4200")
@@ -46,26 +43,37 @@ public class RestSelectController {
         else
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
+    @PostMapping(path="/add", consumes="application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public TransformerSubst addSubst(@RequestBody TransformerSubst postSubst){
+        return transformerRepo.save(postSubst);
+    }
+    @DeleteMapping(path="/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteSubst(@PathVariable("id") Integer id){
+        try{
+            transformerRepo.deleteById(id);
+        } catch (EmptyResultDataAccessException e){}
+    }
 
-    @PutMapping ("/{editByName}")
-    public TransformerSubst putSubst(@PathVariable("editByName") Integer id,
-                                     @RequestBody TransformerSubst put){
+    @PutMapping ("/{editById}")
+    public TransformerSubst putSubst(@PathVariable("editById") Integer id,
+                                     @RequestBody TransformerSubst putSubst){
         TransformerSubst transformerSubst = transformerRepo.findById(id).get();
-        if (put.getNameSubst() != null){
-            transformerSubst.setNameSubst(put.getNameSubst());
+        if (putSubst.getNameSubst() != null){
+            transformerSubst.setNameSubst(putSubst.getNameSubst());
         }
-        if (put.getIP() != null){
-            transformerSubst.setIP(put.getIP());
+        if (putSubst.getIP() != null){
+            transformerSubst.setIP(putSubst.getIP());
         }
-        if (put.getZone() != null){
-            transformerSubst.setZone(put.getZone());
+        if (putSubst.getZone() != null){
+            transformerSubst.setZone(putSubst.getZone());
         }
         return transformerRepo.save(transformerSubst);
     }
-    @PatchMapping (path="/{editByName}", consumes="application/json")
-    //@PatchMapping ("/{editByName}")
-    //public TransformerSubst patchSubst(@PathVariable("editByName") Integer id,
-    public ResponseEntity<?> patchSubst(@PathVariable("editByName") Integer id,
+    //@PatchMapping (path="/{editByName}", consumes="application/json")
+    @PatchMapping ("/{editById}")
+    public TransformerSubst patchSubst(@PathVariable("editById") Integer id,
                                        @RequestBody TransformerSubst patch){
         TransformerSubst transformerSubst = transformerRepo.findById(id).get();
         if (patch.getNameSubst() != null){
@@ -77,9 +85,7 @@ public class RestSelectController {
         if (patch.getZone() != null){
             transformerSubst.setZone(patch.getZone());
         }
-        //return transformerRepo.save(transformerSubst);
-        transformerRepo.save(transformerSubst);
-        return ResponseEntity.ok("resource patched");
+        return transformerRepo.save(transformerSubst);
     }
 
     /*public TransformerSubst substById(@PathVariable("id") Integer id){

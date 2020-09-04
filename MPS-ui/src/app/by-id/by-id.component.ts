@@ -19,6 +19,7 @@ export class ByIdComponent implements OnInit {
     this.id = this.activatedRoute.snapshot.params['id']
     this.httpService.getbyId(this.id).subscribe(
       data=>this.subst = data)
+    console.log("ngOnInit ByIdComponent output in console")
   }
 
 }

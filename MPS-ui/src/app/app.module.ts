@@ -8,7 +8,8 @@ import { SubstListComponent } from './subst-list/subst-list.component';
 import { RecentComponent } from './recent/recent.component';
 import { ByIdComponent } from './by-id/by-id.component';
 import {UpdateComponent} from "./update/update.component";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { AddComponent } from './add/add.component';
 
 
 @NgModule({
@@ -17,14 +18,16 @@ import {FormsModule} from "@angular/forms";
     SubstListComponent,
     RecentComponent,
     ByIdComponent,
-    UpdateComponent
+    UpdateComponent,
+    AddComponent
 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
