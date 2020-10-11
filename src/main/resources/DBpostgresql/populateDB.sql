@@ -1,4 +1,4 @@
-INSERT INTO user(username,password) VALUES
-( 'Guest','');
-INSERT INTO transformersubstations(namesubs,ip,zone) VALUES
-('ТП-2','192.168.1.2','РЭС-2');
+INSERT INTO user_table(id,username,password) VALUES
+(1,'Guest','');
+INSERT INTO transformersubstations(id,namesubs,ip,zone) VALUES
+(2,'ТП-2','192.168.1.1','РЭС-2');
