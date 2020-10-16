@@ -1,5 +1,4 @@
-server:
-  port: 8443
+
   ssl:
     #key-store: file:///C:/Java/source/SpringMPS/mykeys.jks
     key-store: mykeys.jks
