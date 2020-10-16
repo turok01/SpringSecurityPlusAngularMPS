@@ -1,20 +1,17 @@
-
-  ssl:
-    #key-store: file:///C:/Java/source/SpringMPS/mykeys.jks
-    key-store: mykeys.jks
-    key-store-password: letmein
-    key-password: letmein
-
+server:
+  port: 8444
+ssl:
+  #key-store: file:///C:/Java/source/SpringMPS/mykeys.jks
+  key-store: mykeys.jks
+  key-store-password: letmein
+  key-password: letmein
 logging:
-  level:
-      root: WARN
-      org.springframework.security: WARN
-  file:
+ level:
+  root: WARN
+  org.springframework.security: WARN
+ file:
     name: MPS.log
     path: /logs/
-
 mps:
   substations:
-    pageSize: 5
-
-
+  pageSize: 5
