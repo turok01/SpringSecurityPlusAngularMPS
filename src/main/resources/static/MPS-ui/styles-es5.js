@@ -464,7 +464,7 @@
   /***/
   function _(module, exports, __webpack_require__) {
     module.exports = __webpack_require__(
-    /*! C:\Java\source\SpringPlusAngularMPS\MPS-ui\src\styles.css */
+    /*! c:\Java\source\SpringPlusAngularMPS\MPS-ui\src\styles.css */
     "./src/styles.css");
     /***/
   }
