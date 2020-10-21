@@ -8,16 +8,16 @@ export class HttpService {
   constructor(private http:HttpClient) { }
   getAll():Observable<any>{
     //return this.http.get('http://localhost:8080/rest-select');
-    return this.http.get('https://localhost:8443/rest/select');
+    return this.http.get('http://localhost:8443/rest/select');
     //return this.http.get('https://localhost:8443/select');
   }
 
   getRecent():Observable<any>{
-    return  this.http.get('https://localhost:8443/rest/recent');
+    return  this.http.get('http://localhost:8443/rest/recent');
   }
 
   getbyId(id:number):Observable<any>{
-    return  this.http.get('https://localhost:8443/rest/' + id);
+    return  this.http.get('http://localhost:8443/rest/' + id);
   }
 
 }
