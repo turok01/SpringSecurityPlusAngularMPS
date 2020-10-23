@@ -14,7 +14,8 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Slf4j
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path="/rest", produces = "application/json")
 public class RestSelectController {
