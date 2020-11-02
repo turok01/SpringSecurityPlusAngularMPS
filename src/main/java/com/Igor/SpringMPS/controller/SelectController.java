@@ -1,5 +1,6 @@
 package com.Igor.SpringMPS.controller;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import com.Igor.SpringMPS.ListTransformerSubst;
 import com.Igor.SpringMPS.TempTransformerSubst;
@@ -17,6 +18,7 @@ import org.springframework.validation.Errors;
 
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,7 +32,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/select")
 //@SessionAttributes(types = TransformerSubst.class)
-@SessionAttributes(value = "currentSubst")
+//@SessionAttributes(value = "currentSubst")
 @ConfigurationProperties(prefix="mps.substations")
 public class SelectController {
 
@@ -52,7 +54,8 @@ public class SelectController {
     }
 
     @GetMapping
-    public String showSelectForm(@ModelAttribute("currentSubst") TransformerSubst tp, Model model,
+    //public String showSelectForm(@ModelAttribute("currentSubst") TransformerSubst tp, Model model,
+    public String showSelectForm( TransformerSubst tp, Model model,
                                  @RequestParam("pageNumber") Optional<Integer> pageNumber ){
 
         int currentPage = pageNumber.orElse(0);
@@ -88,21 +91,16 @@ public class SelectController {
     @PostMapping(params = "edit")
     //public String processSelect( @ModelAttribute("currentSubst")  TransformerSubst tp,TempTransformerSubst tempTp){
     //public String processSelect( @ModelAttribute TransformerSubst tempTp){
-    public String processSelect(TransformerSubst tempTp, Errors errors, Model model){
+    //public String processSelect(@ModelAttribute("currentSubst") TransformerSubst tempTp, Errors errors, Model model, HttpSession httpSession, RedirectAttributes attributes){
+    public String processSelect(@ModelAttribute("currentSubst") TransformerSubst tempTp, Errors errors, Model model, HttpSession httpSession,HttpServletRequest request){
         if(tempTp.getId()==null)
             return "redirect:/select";
         log.info("Processing select: " + tempTp.toString());
         model.addAttribute("currentSubst",tempTp);
+        //httpSession.setAttribute("currentSubst",tempTp);
         model.addAttribute("id", tempTp.getId());
 
         return "redirect:/edit/current";
-/*-
-        public String getQuestion(ModelMap model, HttpServletRequest request) {
-            String[] questions ={ "a","b", "c"};
-            request.getSession().setAttribute("questions", questions);
-            return "index";
-        }
- */
     }
     @PostMapping(params="delete")
     public String deleteForm(TransformerSubst transformerSubst){

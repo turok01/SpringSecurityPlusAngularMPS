@@ -35,6 +35,7 @@
     <span class="validationError" th:if="${#fields.hasErrors('zone')}"
           th:errors="*{zone}">Zone Error</span>
     <br/>
+    <input type="hidden" th:field="*{id}"/>
     <div>
         <button>Сохранить изменения</button>
     </div>
