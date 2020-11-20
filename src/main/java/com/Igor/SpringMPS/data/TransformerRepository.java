@@ -11,5 +11,6 @@ import java.util.List;
 public interface TransformerRepository extends CrudRepository<TransformerSubst, Integer> {
     Page<TransformerSubst> findAll(Pageable pageable);
     List<TransformerSubst> findAll();
+    List<TransformerSubst> findByUserId(Long userId);
 
 }

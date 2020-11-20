@@ -11,7 +11,7 @@
         Unable to login. Check your username and password.
     </div>
     <p>New here? Click
-    <a th:href="@{/register}">here</a> to register.</p>
+    <a th:href="@{/registrationRush}">here</a> to register.</p>
     <!-- tag::thAction[] -->
     <form method="POST" th:action="@{/login}" id="loginForm">
         <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>

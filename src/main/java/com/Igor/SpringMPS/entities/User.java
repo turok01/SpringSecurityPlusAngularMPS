@@ -1,9 +1,6 @@
 package com.Igor.SpringMPS.entities;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,12 +8,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table (name = "user_table")
 @Data
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force=true)
-@RequiredArgsConstructor
+//@NoArgsConstructor(access = AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access = AccessLevel.PUBLIC, force=true)
+//@RequiredArgsConstructor
+//@AllArgsConstructor
 public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
 
@@ -24,13 +24,24 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private final String username;
-    private final String password;
+    //private final String username;
+    //private final String password;
+    private String username;
+    private String password;
+    private String name;
+    private String googleName;
+    private String googleUsername;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
     }
+
+    //@ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    //@CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    //@Enumerated(EnumType.STRING)
+    //private Set<Role> roles;
+
 
     @Override
     public boolean isAccountNonExpired() {
