@@ -1,0 +1,46 @@
+package com.Igor.SpringMPS.security;
+
+import com.Igor.SpringMPS.data.UserRepository;
+import com.Igor.SpringMPS.entities.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+@Controller
+public class RegistrationControllerJavaRush {
+
+    private final UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public RegistrationControllerJavaRush(UserRepository userRepository){this.userRepository=userRepository;}
+
+    @GetMapping("/registrationRush")
+    public String registration(){
+        return "registrationRush";
+    }
+
+    @PostMapping("/registrationRush")
+    //public String addUser(RegistrationForm registrationForm){
+    public String addUser(String username,String password, String confirm){
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+        //userRepository.save(registrationForm.toUser(passwordEncoder));
+        return "redirect:/login";
+    }
+    /*public String addUser(String name, String username, String password){
+        User user = new User();
+        user.setName(name);
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+
+        return "redirect:/login";
+    }*/
+}

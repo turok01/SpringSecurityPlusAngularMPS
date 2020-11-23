@@ -11,6 +11,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         //registry.addViewController("/login");
+
+        //configuration, witch view will be a Spring Security login page
         registry.addViewController("/login").setViewName("login");
 
         //registry.addViewController("/").setViewName("home");
