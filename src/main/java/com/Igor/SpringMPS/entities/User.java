@@ -32,15 +32,19 @@ public class User implements UserDetails {
     private String googleName;
     private String googleUsername;
 
+    //@Override
+    //public Collection<? extends GrantedAuthority> getAuthorities() {
+     //   return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+    //}
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+    public Collection<? extends GrantedAuthority> getAuthorities()
+    {
+        return getRoles();
     }
-
-    //@ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    //@CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
-    //@Enumerated(EnumType.STRING)
-    //private Set<Role> roles;
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 
 
     @Override
