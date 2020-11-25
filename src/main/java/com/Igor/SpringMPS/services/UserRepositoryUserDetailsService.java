@@ -1,4 +1,4 @@
-package com.Igor.SpringMPS.security;
+package com.Igor.SpringMPS.services;
 
 import com.Igor.SpringMPS.data.UserRepository;
 import com.Igor.SpringMPS.entities.User;
@@ -20,10 +20,25 @@ public class UserRepositoryUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException{
-        User user = userRepository.findByUsername(username);
-        if (user!=null) {
-            return user;
+        User userFindByUserName = userRepository.findByUsername(username);
+        User userFindByName = userRepository.findByName(username);
+        User userFindByGoogleUsername = userRepository.findByGoogleUsername(username);
+        User userFindByGoogleName = userRepository.findByGoogleName(username);
+
+        if (userFindByUserName!=null) {return userFindByUserName;}
+
+        if (userFindByName!=null) {return userFindByName;}
+        if(userFindByGoogleUsername != null)
+        {
+            return userFindByGoogleUsername;
         }
+
+        if(userFindByGoogleName != null)
+        {
+            return userFindByGoogleName;
+        }
+
+
         throw new UsernameNotFoundException(
                 "User '" + username + "' not found");
 
