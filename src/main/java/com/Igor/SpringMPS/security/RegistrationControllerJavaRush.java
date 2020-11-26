@@ -14,13 +14,14 @@ import java.util.Collections;
 @Controller
 public class RegistrationControllerJavaRush {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public RegistrationControllerJavaRush(UserRepository userRepository){this.userRepository=userRepository;}
+    //@Autowired
+   //public RegistrationControllerJavaRush(UserRepository userRepository){this.userRepository=userRepository;}
 
     @GetMapping("/registrationRush")
     public String registration(){
@@ -29,8 +30,9 @@ public class RegistrationControllerJavaRush {
 
     @PostMapping("/registrationRush")
     //public String addUser(RegistrationForm registrationForm){
-    public String addUser(String username,String password, String confirm){
+    public String addUser(String name, String username,String password, String confirm){
         User user = new User();
+        user.setUsername(name);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setRoles(Collections.singleton(Role.USER));

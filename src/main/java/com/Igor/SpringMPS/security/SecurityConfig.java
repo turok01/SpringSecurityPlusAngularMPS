@@ -1,5 +1,6 @@
 package com.Igor.SpringMPS.security;
 
+import com.Igor.SpringMPS.data.UserRepository;
 import com.Igor.SpringMPS.services.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,11 +19,19 @@ import java.security.AuthProvider;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public PasswordEncoder encoder(){
-        //return new StandardPasswordEncoder("53cr3t");
-        return new BCryptPasswordEncoder();
-    }
+    //@Autowired
+    //private PasswordEncoder passwordEncoder;
+
+    //@Autowired
+    //private UserRepository userRepository;
+
+    //@Bean
+    //public PasswordEncoder encoder(){
+     //   //return new StandardPasswordEncoder("53cr3t");
+      //  return new BCryptPasswordEncoder();
+       // //PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        ////return passwordEncoder;
+    //}
 
     @Autowired
     private CustomAuthenticationProvider customAuthenticationProvider;
