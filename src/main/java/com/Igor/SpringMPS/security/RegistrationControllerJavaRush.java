@@ -32,7 +32,7 @@ public class RegistrationControllerJavaRush {
     //public String addUser(RegistrationForm registrationForm){
     public String addUser(String name, String username,String password, String confirm){
         User user = new User();
-        user.setUsername(name);
+        user.setName(name);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setRoles(Collections.singleton(Role.USER));

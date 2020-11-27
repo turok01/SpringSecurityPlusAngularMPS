@@ -3,6 +3,7 @@ package com.Igor.SpringMPS.security;
 import com.Igor.SpringMPS.data.UserRepository;
 import com.Igor.SpringMPS.services.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,11 +13,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.security.AuthProvider;
 
 @Configuration
 @EnableWebSecurity
+@EnableOAuth2Client
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     //@Autowired
@@ -34,6 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //}
 
     @Autowired
+    private OAuth2ClientContext oAuth2ClientContext;
+
+    @Autowired
     private CustomAuthenticationProvider customAuthenticationProvider;
 
     @Override
@@ -41,6 +47,43 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     {
         auth.authenticationProvider(customAuthenticationProvider);
     }
+
+    @Bean
+    @ConfigurationProperties("google.client")
+    public AuthorizationCodeResourceDetails google()
+    {
+        return new AuthorizationCodeResourceDetails();
+    }
+
+    @Bean
+    @ConfigurationProperties("google.resource")
+    public ResourceServerProperties googleResource()
+    {
+        return new ResourceServerProperties();
+    }
+
+    @Bean
+    public FilterRegistrationBean oAuth2ClientFilterRegistration(OAuth2ClientContextFilter oAuth2ClientContextFilter)
+    {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(oAuth2ClientContextFilter);
+        registration.setOrder(-100);
+        return registration;
+    }
+
+    private Filter ssoFilter()
+    {
+        OAuth2ClientAuthenticationProcessingFilter googleFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/google");
+        OAuth2RestTemplate googleTemplate = new OAuth2RestTemplate(google(), oAuth2ClientContext);
+        googleFilter.setRestTemplate(googleTemplate);
+        CustomUserInfoTokenServices tokenServices = new CustomUserInfoTokenServices(googleResource().getUserInfoUri(), google().getClientId());
+        tokenServices.setRestTemplate(googleTemplate);
+        googleFilter.setTokenServices(tokenServices);
+        tokenServices.setUserRepo(userRepo);
+        tokenServices.setPasswordEncoder(passwordEncoder);
+        return googleFilter;
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         //you have to disable csrf Protection because it is enabled by default in spring
@@ -61,6 +104,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/select", true)
         .and()
                 .logout().logoutSuccessUrl("/login");
+        http
+                .addFilterBefore(ssoFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
 }
