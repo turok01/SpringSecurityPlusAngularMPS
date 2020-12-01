@@ -6,20 +6,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.security.AuthProvider;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableOAuth2Client
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     //@Autowired
@@ -37,9 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //}
 
     @Autowired
-    private OAuth2ClientContext oAuth2ClientContext;
-
-    @Autowired
     private CustomAuthenticationProvider customAuthenticationProvider;
 
     @Override
@@ -48,40 +51,38 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(customAuthenticationProvider);
     }
 
-    @Bean
-    @ConfigurationProperties("google.client")
-    public AuthorizationCodeResourceDetails google()
-    {
-        return new AuthorizationCodeResourceDetails();
-    }
+    private static String CLIENT_PROPERTY_KEY
+            = "spring.security.oauth2.client.registration.";
+
+    @Autowired
+    private Environment env;
 
     @Bean
-    @ConfigurationProperties("google.resource")
-    public ResourceServerProperties googleResource()
-    {
-        return new ResourceServerProperties();
-    }
+    public ClientRegistration getRegistration(String client) {
+        String clientId = env.getProperty(
+                CLIENT_PROPERTY_KEY + client + ".client-id");
 
+        if (clientId == null) {
+            return null;
+        }
+
+        String clientSecret = env.getProperty(
+                CLIENT_PROPERTY_KEY + client + ".client-secret");
+
+        if (client.equals("google")) {
+            return CommonOAuth2Provider.GOOGLE.getBuilder(client)
+                    .clientId(clientId).clientSecret(clientSecret).build();
+        }
+        if (client.equals("facebook")) {
+            return CommonOAuth2Provider.FACEBOOK.getBuilder(client)
+                    .clientId(clientId).clientSecret(clientSecret).build();
+        }
+        return null;
+    }
     @Bean
-    public FilterRegistrationBean oAuth2ClientFilterRegistration(OAuth2ClientContextFilter oAuth2ClientContextFilter)
-    {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(oAuth2ClientContextFilter);
-        registration.setOrder(-100);
-        return registration;
-    }
-
-    private Filter ssoFilter()
-    {
-        OAuth2ClientAuthenticationProcessingFilter googleFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/google");
-        OAuth2RestTemplate googleTemplate = new OAuth2RestTemplate(google(), oAuth2ClientContext);
-        googleFilter.setRestTemplate(googleTemplate);
-        CustomUserInfoTokenServices tokenServices = new CustomUserInfoTokenServices(googleResource().getUserInfoUri(), google().getClientId());
-        tokenServices.setRestTemplate(googleTemplate);
-        googleFilter.setTokenServices(tokenServices);
-        tokenServices.setUserRepo(userRepo);
-        tokenServices.setPasswordEncoder(passwordEncoder);
-        return googleFilter;
+    @Autowired
+    public ClientRegistrationRepository clientRegistrationRepository(List<ClientRegistration> registrations) {
+        return new InMemoryClientRegistrationRepository(registrations);
     }
 
     @Override
@@ -99,13 +100,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/rest/**","/login","/registrationRush")
                     .access("permitAll")
                 .anyRequest().authenticated()
+                .and()
+                .oauth2Login()
         .and()
                 .formLogin().loginPage("/login")
                 .defaultSuccessUrl("/select", true)
         .and()
                 .logout().logoutSuccessUrl("/login");
-        http
-                .addFilterBefore(ssoFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
 }
