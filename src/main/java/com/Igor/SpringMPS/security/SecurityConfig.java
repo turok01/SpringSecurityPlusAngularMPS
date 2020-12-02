@@ -15,6 +15,8 @@ import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
@@ -22,11 +24,15 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.security.AuthProvider;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private static List<String> clients = Arrays.asList("google", "facebook");
 
     //@Autowired
     //private PasswordEncoder passwordEncoder;
@@ -51,13 +57,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(customAuthenticationProvider);
     }
 
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        List<ClientRegistration> registrations = clients.stream()
+                .map(c -> getRegistration(c))
+                .filter(registration -> registration != null)
+                .collect(Collectors.toList());
+
+        return new InMemoryClientRegistrationRepository(registrations);
+    }
+
     private static String CLIENT_PROPERTY_KEY
             = "spring.security.oauth2.client.registration.";
 
     @Autowired
     private Environment env;
 
-    @Bean
+    //@Bean
     public ClientRegistration getRegistration(String client) {
         String clientId = env.getProperty(
                 CLIENT_PROPERTY_KEY + client + ".client-id");
@@ -79,10 +95,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
         return null;
     }
+
     @Bean
-    @Autowired
-    public ClientRegistrationRepository clientRegistrationRepository(List<ClientRegistration> registrations) {
-        return new InMemoryClientRegistrationRepository(registrations);
+    public OAuth2AuthorizedClientService authorizedClientService() {
+
+        return new InMemoryOAuth2AuthorizedClientService(
+                clientRegistrationRepository());
     }
 
     @Override
@@ -102,6 +120,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
+                .clientRegistrationRepository(clientRegistrationRepository())
+                .authorizedClientService(authorizedClientService())
         .and()
                 .formLogin().loginPage("/login")
                 .defaultSuccessUrl("/select", true)
