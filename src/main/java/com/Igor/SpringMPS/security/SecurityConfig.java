@@ -15,15 +15,17 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Configuration
-@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+//@EnableWebSecurity
+public class SecurityConfig{//} extends WebSecurityConfigurerAdapter {
+//*----------
     private static List<String> clients = Arrays.asList("google", "facebook");
 
     @Bean
@@ -63,6 +65,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
         return null;
     }
+
+    @Bean
+    public OAuth2AuthorizedClientService authorizedClientService(
+            ClientRegistrationRepository clientRegistrationRepository) {
+        return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
+    }
+
+    @Bean
+    public OAuth2AuthorizedClientRepository authorizedClientRepository(
+            OAuth2AuthorizedClientService authorizedClientService) {
+        return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(authorizedClientService);
+    }
+
+//----------------*/
     //@Autowired
     //private PasswordEncoder passwordEncoder;
 
@@ -77,6 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ////return passwordEncoder;
     //}
 
+    /*
     @Autowired
     private CustomAuthenticationProvider customAuthenticationProvider;
 
@@ -85,16 +102,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     {
         auth.authenticationProvider(customAuthenticationProvider);
     }
+ */
 
 
-
-
+/*
     @Bean
     public OAuth2AuthorizedClientService authorizedClientService() {
 
         return new InMemoryOAuth2AuthorizedClientService(
                 clientRegistrationRepository());
     }
+
+ */
     @EnableWebSecurity
     public static class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
@@ -114,7 +133,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                     .and()
                     .oauth2Login()
-                    // .clientRegistrationRepository(clientRegistrationRepository())
+                    //.clientRegistrationRepository(clientRegistrationRepository())
                     // .authorizedClientService(authorizedClientService())
                     .and()
                     .formLogin().loginPage("/login")
