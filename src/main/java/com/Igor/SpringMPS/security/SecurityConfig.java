@@ -124,8 +124,8 @@ public class SecurityConfig{//} extends WebSecurityConfigurerAdapter {
             http.authorizeRequests()
                     //.antMatchers("/select", "/addnew","/edit/current")
                     .antMatchers("/addnew", "/edit/current")
-                    //  .access("hasRole('ROLE_USER')" )
-                    .access("hasAnyAuthority('USER')")
+                      .access("hasRole('ROLE_USER')" )// this ROLE in case of OAuth2 (google)
+                    //.access("hasAnyAuthority('USER')") // this ROLE in case of my own realisation of Authorization
 
                     //.antMatchers("/rest/**","/","/**")
                     .antMatchers("/rest/**", "/login", "/registrationRush")
