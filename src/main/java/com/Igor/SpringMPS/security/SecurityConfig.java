@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Configuration
 //@EnableWebSecurity
-public class SecurityConfig{//} extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {//extends WebSecurityConfigurerAdapter {
 //*----------
     private static List<String> clients = Arrays.asList("google", "facebook");
 
@@ -93,16 +93,17 @@ public class SecurityConfig{//} extends WebSecurityConfigurerAdapter {
         ////return passwordEncoder;
     //}
 
-    /*
-    @Autowired
-    private CustomAuthenticationProvider customAuthenticationProvider;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth)
-    {
-        auth.authenticationProvider(customAuthenticationProvider);
-    }
- */
+    /*
+        @Autowired
+        private CustomAuthenticationProvider customAuthenticationProvider;
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) {
+            auth.authenticationProvider(customAuthenticationProvider);
+        }
+    */
+
 
 
 /*
@@ -116,6 +117,13 @@ public class SecurityConfig{//} extends WebSecurityConfigurerAdapter {
  */
     @EnableWebSecurity
     public static class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
+        @Autowired
+        private CustomAuthenticationProvider customAuthenticationProvider;
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) {
+            auth.authenticationProvider(customAuthenticationProvider);
+        }
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             //you have to disable csrf Protection because it is enabled by default in spring
