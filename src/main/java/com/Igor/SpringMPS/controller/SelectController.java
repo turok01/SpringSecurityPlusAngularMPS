@@ -12,6 +12,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -56,7 +60,14 @@ public class SelectController {
     @GetMapping
     //public String showSelectForm(@ModelAttribute("currentSubst") TransformerSubst tp, Model model,
     public String showSelectForm( TransformerSubst tp, Model model,
-                                 @RequestParam("pageNumber") Optional<Integer> pageNumber ){
+                                 @RequestParam("pageNumber") Optional<Integer> pageNumber,
+                                  @RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient,
+                                  @AuthenticationPrincipal OAuth2User oauth2User){
+
+        model.addAttribute("username",oauth2User.getAttribute("name"));
+        model.addAttribute("usermail",oauth2User.getAttribute("email"));
+        model.addAttribute("userauthorities",oauth2User.getAuthorities());
+
 
         int currentPage = pageNumber.orElse(0);
 

@@ -1,31 +1,84 @@
 package com.Igor.SpringMPS.security;
 
-import com.Igor.SpringMPS.data.UserRepository;
 import com.Igor.SpringMPS.services.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
-import org.springframework.security.oauth2.client.OAuth2ClientContext;
-import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
+import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 
-import java.security.AuthProvider;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
-@EnableWebSecurity
-@EnableOAuth2Client
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+//@EnableWebSecurity
+public class SecurityConfig {//extends WebSecurityConfigurerAdapter {
+//*----------
+    private static List<String> clients = Arrays.asList("google", "facebook");
 
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        List<ClientRegistration> registrations = clients.stream()
+                .map(c -> getRegistration(c))
+                .filter(registration -> registration != null)
+                .collect(Collectors.toList());
+
+        return new InMemoryClientRegistrationRepository(registrations);
+    }
+
+    private static String CLIENT_PROPERTY_KEY
+            = "spring.security.oauth2.client.registration.";
+
+    @Autowired
+    private Environment env;
+
+    private ClientRegistration getRegistration(String client) {
+        String clientId = env.getProperty(
+                CLIENT_PROPERTY_KEY + client + ".client-id");
+
+        if (clientId == null) {
+            return null;
+        }
+
+        String clientSecret = env.getProperty(
+                CLIENT_PROPERTY_KEY + client + ".client-secret");
+
+        if (client.equals("google")) {
+            return CommonOAuth2Provider.GOOGLE.getBuilder(client)
+                    .clientId(clientId).clientSecret(clientSecret).build();
+        }
+        if (client.equals("facebook")) {
+            return CommonOAuth2Provider.FACEBOOK.getBuilder(client)
+                    .clientId(clientId).clientSecret(clientSecret).build();
+        }
+        return null;
+    }
+
+    @Bean
+    public OAuth2AuthorizedClientService authorizedClientService(
+            ClientRegistrationRepository clientRegistrationRepository) {
+        return new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
+    }
+
+    @Bean
+    public OAuth2AuthorizedClientRepository authorizedClientRepository(
+            OAuth2AuthorizedClientService authorizedClientService) {
+        return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(authorizedClientService);
+    }
+
+//----------------*/
     //@Autowired
     //private PasswordEncoder passwordEncoder;
 
@@ -40,76 +93,62 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ////return passwordEncoder;
     //}
 
-    @Autowired
-    private OAuth2ClientContext oAuth2ClientContext;
 
-    @Autowired
-    private CustomAuthenticationProvider customAuthenticationProvider;
+    /*
+        @Autowired
+        private CustomAuthenticationProvider customAuthenticationProvider;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth)
-    {
-        auth.authenticationProvider(customAuthenticationProvider);
-    }
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) {
+            auth.authenticationProvider(customAuthenticationProvider);
+        }
+    */
 
+
+
+/*
     @Bean
-    @ConfigurationProperties("google.client")
-    public AuthorizationCodeResourceDetails google()
-    {
-        return new AuthorizationCodeResourceDetails();
+    public OAuth2AuthorizedClientService authorizedClientService() {
+
+        return new InMemoryOAuth2AuthorizedClientService(
+                clientRegistrationRepository());
     }
 
-    @Bean
-    @ConfigurationProperties("google.resource")
-    public ResourceServerProperties googleResource()
-    {
-        return new ResourceServerProperties();
-    }
+ */
+    @EnableWebSecurity
+    public static class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
+        @Autowired
+        private CustomAuthenticationProvider customAuthenticationProvider;
 
-    @Bean
-    public FilterRegistrationBean oAuth2ClientFilterRegistration(OAuth2ClientContextFilter oAuth2ClientContextFilter)
-    {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(oAuth2ClientContextFilter);
-        registration.setOrder(-100);
-        return registration;
-    }
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) {
+            auth.authenticationProvider(customAuthenticationProvider);
+        }
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            //you have to disable csrf Protection because it is enabled by default in spring
+            http.cors().and().csrf().disable();
+            //
+            http.authorizeRequests()
+                    //.antMatchers("/select", "/addnew","/edit/current")
+                    .antMatchers("/addnew", "/edit/current")
+                      .access("hasRole('ROLE_USER')" )// this ROLE in case of OAuth2 (google)
+                    //.access("hasAnyAuthority('USER')") // this ROLE in case of my own realisation of Authorization
 
-    private Filter ssoFilter()
-    {
-        OAuth2ClientAuthenticationProcessingFilter googleFilter = new OAuth2ClientAuthenticationProcessingFilter("/login/google");
-        OAuth2RestTemplate googleTemplate = new OAuth2RestTemplate(google(), oAuth2ClientContext);
-        googleFilter.setRestTemplate(googleTemplate);
-        CustomUserInfoTokenServices tokenServices = new CustomUserInfoTokenServices(googleResource().getUserInfoUri(), google().getClientId());
-        tokenServices.setRestTemplate(googleTemplate);
-        googleFilter.setTokenServices(tokenServices);
-        tokenServices.setUserRepo(userRepo);
-        tokenServices.setPasswordEncoder(passwordEncoder);
-        return googleFilter;
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception{
-        //you have to disable csrf Protection because it is enabled by default in spring
-        http.cors().and().csrf().disable();
-        //
-        http.authorizeRequests()
-                //.antMatchers("/select", "/addnew","/edit/current")
-                     .antMatchers("/addnew","/edit/current")
-                     //  .access("hasRole('ROLE_USER')" )
-                .access("hasAnyAuthority('USER')" )
-
-                //.antMatchers("/rest/**","/","/**")
-                .antMatchers("/rest/**","/login","/registrationRush")
+                    //.antMatchers("/rest/**","/","/**")
+                    .antMatchers("/rest/**", "/login", "/registrationRush")
                     .access("permitAll")
-                .anyRequest().authenticated()
-        .and()
-                .formLogin().loginPage("/login")
-                .defaultSuccessUrl("/select", true)
-        .and()
-                .logout().logoutSuccessUrl("/login");
-        http
-                .addFilterBefore(ssoFilter(), UsernamePasswordAuthenticationFilter.class);
+                    .anyRequest().authenticated()
+                    .and()
+                    .oauth2Login()
+                    //.clientRegistrationRepository(clientRegistrationRepository())
+                    // .authorizedClientService(authorizedClientService())
+                    .and()
+                    .formLogin().loginPage("/login")
+                    .defaultSuccessUrl("/select", true)
+                    .and()
+                    .logout().logoutSuccessUrl("/login");
 
+        }
     }
 }
