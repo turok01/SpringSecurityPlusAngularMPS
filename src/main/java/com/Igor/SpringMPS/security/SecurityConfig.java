@@ -1,5 +1,6 @@
 package com.Igor.SpringMPS.security;
 
+import com.Igor.SpringMPS.security.oauth2.CustomOAuth2UserService;
 import com.Igor.SpringMPS.services.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,10 @@ import java.util.stream.Collectors;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    //@Autowired
+    // private CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
 //*----------
     private static List<String> clients = Arrays.asList("google", "facebook");
 
@@ -115,15 +120,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
  */
-    //@EnableWebSecurity
-    //public static class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
-        //@Autowired
-        //private CustomAuthenticationProvider customAuthenticationProvider;
+    @EnableWebSecurity
+    public static class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
+        @Autowired
+        private CustomAuthenticationProvider customAuthenticationProvider;
 
-        //@Override
-        //protected void configure(AuthenticationManagerBuilder auth) {
-        //    auth.authenticationProvider(customAuthenticationProvider);
-        //}
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) {
+            auth.authenticationProvider(customAuthenticationProvider);
+        }
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             //you have to disable csrf Protection because it is enabled by default in spring
@@ -141,14 +146,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                     .and()
                     .oauth2Login()
-                    //.clientRegistrationRepository(clientRegistrationRepository())
-                    // .authorizedClientService(authorizedClientService())
+                    .clientRegistrationRepository(clientRegistrationRepository())
+                    .authorizedClientService(authorizedClientService())
                     .and()
                     .formLogin().loginPage("/login")
                     .defaultSuccessUrl("/select", true)
                     .and()
                     .logout().logoutSuccessUrl("/login");
 
-        //}
+        }
     }
 }
