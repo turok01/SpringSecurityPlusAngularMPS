@@ -6,6 +6,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
@@ -17,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PUBLIC, force=true)
 //@RequiredArgsConstructor
 //@AllArgsConstructor
-public class User implements UserDetails {
+public class User{ //implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -26,7 +28,7 @@ public class User implements UserDetails {
 
     //private final String username;
     //private final String password;
-    private String username;
+    private String email;//username;
     private String password;
     private String name;
     private String googleName;
@@ -45,6 +47,12 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    private String providerId;
 
 
     @Override
