@@ -3,10 +3,13 @@ package com.Igor.SpringMPS.security.oauth2;
 import com.Igor.SpringMPS.data.UserRepository;
 import com.Igor.SpringMPS.entities.AuthProvider;
 import com.Igor.SpringMPS.entities.User;
+import com.Igor.SpringMPS.exception.OAuth2AuthenticationProcessingException;
 import com.Igor.SpringMPS.security.UserPrincipal;
 import com.Igor.SpringMPS.security.oauth2.user.OAuth2UserInfo;
+import com.Igor.SpringMPS.security.oauth2.user.OAuth2UserInfoFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -14,7 +17,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.naming.AuthenticationException;
+
 import java.util.Optional;
 
 @Service
@@ -40,7 +43,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if(StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
             throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
         }
-        Optional<User> userOptional = userRepository.findByUsername(oAuth2UserInfo.getEmail());
+        //Optional<User> userOptional = userRepository.findByUsername(oAuth2UserInfo.getEmail());
+        Optional<User> userOptional = Optional.ofNullable(userRepository.findByUsername(oAuth2UserInfo.getEmail()));
         User user;
         if (userOptional.isPresent()){
             user = userOptional.get();

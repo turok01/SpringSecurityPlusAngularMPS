@@ -1,6 +1,7 @@
 package com.Igor.SpringMPS.security.oauth2.user;
 
 import com.Igor.SpringMPS.entities.AuthProvider;
+import com.Igor.SpringMPS.exception.OAuth2AuthenticationProcessingException;
 
 import java.util.Map;
 

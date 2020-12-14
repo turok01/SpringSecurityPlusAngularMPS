@@ -33,12 +33,9 @@ public class User{ //implements UserDetails {
     private String name;
     private String googleName;
     private String googleUsername;
+    private String imageUrl;
 
     //@Override
-    //public Collection<? extends GrantedAuthority> getAuthorities() {
-     //   return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
-    //}
-    @Override
     public Collection<? extends GrantedAuthority> getAuthorities()
     {
         return getRoles();
@@ -55,23 +52,15 @@ public class User{ //implements UserDetails {
     private String providerId;
 
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+    //@Override
+    //public boolean isAccountNonExpired() {        return true;    }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+    //@Override
+    //public boolean isAccountNonLocked() {       return true;    }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+    //@Override
+    //public boolean isCredentialsNonExpired() {        return true;    }
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    //@Override
+    //public boolean isEnabled() {        return true;    }
 }
