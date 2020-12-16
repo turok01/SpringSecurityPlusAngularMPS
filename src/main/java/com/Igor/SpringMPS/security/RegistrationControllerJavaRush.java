@@ -30,10 +30,10 @@ public class RegistrationControllerJavaRush {
 
     @PostMapping("/registrationRush")
     //public String addUser(RegistrationForm registrationForm){
-    public String addUser(String name, String username,String password, String confirm){
+    public String addUser(String name, String email,String password, String confirm){
         User user = new User();
         user.setName(name);
-        user.setUsername(username);
+        user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         user.setRoles(Collections.singleton(Role.USER));
         userRepository.save(user);

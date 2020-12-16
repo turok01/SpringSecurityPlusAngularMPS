@@ -35,17 +35,17 @@ public class UserRepositoryUserDetailsService implements UserDetailsService {
         User userFindByGoogleUsername = userRepository.findByGoogleUsername(username);
         User userFindByGoogleName = userRepository.findByGoogleName(username);
 
-        if (userFindByUserName!=null) {return userFindByUserName;}
+        if (userFindByUserName!=null) {return (UserDetails) userFindByUserName;}
 
-        if (userFindByName!=null) {return userFindByName;}
+        if (userFindByName!=null) {return (UserDetails) userFindByName;}
         if(userFindByGoogleUsername != null)
         {
-            return userFindByGoogleUsername;
+            return (UserDetails) userFindByGoogleUsername;
         }
 
         if(userFindByGoogleName != null)
         {
-            return userFindByGoogleName;
+            return (UserDetails) userFindByGoogleName;
         }
 
 
