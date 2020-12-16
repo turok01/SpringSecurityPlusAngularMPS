@@ -1,6 +1,7 @@
 package com.Igor.SpringMPS.security;
 
 import com.Igor.SpringMPS.data.UserRepository;
+import com.Igor.SpringMPS.entities.AuthProvider;
 import com.Igor.SpringMPS.entities.Role;
 import com.Igor.SpringMPS.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,15 @@ public class RegistrationControllerJavaRush {
 
     @PostMapping("/registrationRush")
     //public String addUser(RegistrationForm registrationForm){
-    public String addUser(String name, String email,String password, String confirm){
+    public String addUser(String name, String username, String email, String password, String confirm){
         User user = new User();
+        //username = name;
+        user.setUsername(username);
         user.setName(name);
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         user.setRoles(Collections.singleton(Role.USER));
+        user.setProvider(AuthProvider.LOCAL);
         userRepository.save(user);
         //userRepository.save(registrationForm.toUser(passwordEncoder));
         return "redirect:/login";

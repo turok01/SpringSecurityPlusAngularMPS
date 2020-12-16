@@ -1,8 +1,8 @@
 package com.Igor.SpringMPS.entities;
 
 public enum AuthProvider {
-    local,
-    facebook,
-    google,
-    github
+    LOCAL,
+    FACEBOOK,
+    GOOGLE,
+    GITHUB
 }
