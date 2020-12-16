@@ -28,6 +28,7 @@ public class User{ //implements UserDetails {
 
     //private final String username;
     //private final String password;
+    private String username;
     private String email;//username;
     private String password;
     private String name;

@@ -28,7 +28,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         User user = (User) userService.loadUserByUsername(username);
 
-        if(user != null && (user.getUsername().equals(username) || user.getName().equals(username)))
+        if(user != null && (user.getEmail().equals(username) || user.getName().equals(username)))
         {
             if(!passwordEncoder.matches(password, user.getPassword()))
             {
