@@ -8,7 +8,7 @@ server:
 logging:
  level:
   root: WARN
-  org.springframework.security: WARN
+  org.springframework.security: DEBUG
  file:
     name: MPS.log
     path: /logs/
