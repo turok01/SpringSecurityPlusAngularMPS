@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-//@EnableConfigurationProperties(prefix = "app")
-// @EnableConfigurationProperties
+@ConfigurationProperties(prefix = "app")
+//@EnableConfigurationProperties
 @Component
 public class AppProperties {
     private final Auth auth = new Auth();

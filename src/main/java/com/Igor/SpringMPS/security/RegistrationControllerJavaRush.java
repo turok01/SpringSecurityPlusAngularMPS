@@ -34,6 +34,7 @@ public class RegistrationControllerJavaRush {
     public String addUser(String name, String username, String email, String password, String confirm){
         User user = new User();
         //username = name;
+        email = username;
         user.setUsername(username);
         user.setName(name);
         user.setEmail(email);
