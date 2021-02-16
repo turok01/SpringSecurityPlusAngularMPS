@@ -23,4 +23,11 @@ public class WebConfig implements WebMvcConfigurer {
                 //.allowCredentials(false);
                 .allowCredentials(true);
     }
+
+    //remove error 404 for static resources
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/");
+    }
 }
