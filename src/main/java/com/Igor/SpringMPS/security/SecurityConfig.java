@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
@@ -19,19 +19,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         //you have to disable csrf Protection because it is enabled by default in spring
-        http.cors().and().csrf().disable();
+        //http.cors().and().csrf().disable();
         //
         http.authorizeRequests()
                 //.antMatchers("/select", "/addnew","/edit/current")
                     // .antMatchers("/addnew","/edit/current")
                     //   .access("hasRole('ROLE_USER')")
-                .antMatchers("/rest/**","/","/**")
-                    .access("permitAll")
+                .antMatchers("/oauth_login","/static/**","/rest/**")//,"/","/**")
+                .permitAll()//.access("permitAll")
+                .anyRequest().authenticated()
         .and()
-                .formLogin().loginPage("/login")
-                .defaultSuccessUrl("/select", true)
-        .and()
-                .logout().logoutSuccessUrl("/login");
+                .oauth2Login()
+                .loginPage("/oauth_login");
+                //.formLogin().loginPage("/login")
+                //.defaultSuccessUrl("/select", true)
+        /*.and()
+                .logout().logoutSuccessUrl("/login");*/
 
     }
 }

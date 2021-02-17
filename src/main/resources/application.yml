@@ -1,5 +1,5 @@
 server:
- port: 8443
+ port: 8888
  #ssl:
   #key-store: file:///C:/Java/source/SpringMPS/mykeys.jks
   #key-store: mykeys.jks
@@ -7,12 +7,13 @@ server:
   #key-password: letmein
 logging:
  level:
-  root: WARN
-  org.springframework.web: INFO
-  org.springframework.security: WARN
- file:
-    name: MPS.log
-    path: /logs/
+  root: INFO
+  org.springframework.web: DEBUG
+  org.springframework.security: DEBUG
+  #WARN INFO DEBUG
+ #file:
+ #   name: MPS.log
+ #   path: /logs/
 spring:
   thymeleaf:
     cache: false
