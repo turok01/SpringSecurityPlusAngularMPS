@@ -1,10 +1,15 @@
 package com.Igor.SpringMPS.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -24,6 +29,7 @@ import org.springframework.http.HttpHeaders;
 //import org.springframework.web.reactive.function.client.WebClient;
 //import reactor.core.publisher.Mono;
 
+import java.security.Principal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,13 +61,21 @@ public class Oauth2LoginController {
 
     @RequestMapping("/currentuserinfo")
     public String currentuserinfo(Model model, OAuth2AuthenticationToken authentication) {
-        OAuth2AuthorizedClient authorizedClient = authorizedClientService.loadAuthorizedClient(
+        String username;
+        String useremail;
+        /*OAuth2AuthorizedClient authorizedClient = authorizedClientService.loadAuthorizedClient(
                 authentication.getAuthorizedClientRegistrationId(),authentication.getName());
-        String s_name = authentication.getPrincipal().getAttribute("name");
-        model.addAttribute("name", s_name);
+        model.addAttribute("clientName", authorizedClient.getClientRegistration().getClientName());
+        */
+
+        //getPrincipal() may have outdated token?
+        username = authentication.getPrincipal().getAttribute("name");
+        useremail = authentication.getPrincipal().getAttribute("email");
+
+        model.addAttribute("username",username);
+        model.addAttribute("useremail",useremail);
 
         /*
-        */
         Map userAttributes = Collections.emptyMap();
         String userInfoEndpointUri = authorizedClient.getClientRegistration()
                 .getProviderDetails().getUserInfoEndpoint().getUri();
@@ -75,12 +89,8 @@ public class Oauth2LoginController {
             ResponseEntity<Map> response = restTemplate.exchange(userInfoEndpointUri, HttpMethod.GET, entity, Map.class);
             userAttributes = response.getBody();
             model.addAttribute("name", userAttributes.get("name"));
-        }
-        model.addAttribute("clientName", authorizedClient.getClientRegistration().getClientName());
-        /**/
+        }*/
 
-        //model.addAttribute("userAttributes", userAttributes);
-        //model.addAttribute("userName", authentication.getName()); //sub
 
         return "currentuserinfo";
     }
