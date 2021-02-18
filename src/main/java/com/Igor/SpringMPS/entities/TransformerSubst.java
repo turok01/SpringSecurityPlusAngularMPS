@@ -28,7 +28,8 @@ public class TransformerSubst implements Serializable {
     @NotBlank(message = "Необходимо указать зону обслуживания подстанции")
     private String zone;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="user_id",referencedColumnName = "id")
     private User user;
 
 }

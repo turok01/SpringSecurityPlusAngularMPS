@@ -11,12 +11,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table (name = "user_table")
 @Data
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force=true)
-@RequiredArgsConstructor
+@NoArgsConstructor//(access = AccessLevel.PRIVATE, force=true)
+//@RequiredArgsConstructor
 public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
 
@@ -24,8 +25,11 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private final String username;
-    private final String password;
+    //private final String username;
+    //private final String password;
+    private String username;
+    private String password;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -51,4 +55,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @OneToMany(mappedBy = "user")
+    private List<TransformerSubst> transformerSubstList;
 }

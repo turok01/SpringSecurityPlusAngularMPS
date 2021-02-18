@@ -24,9 +24,9 @@ public class RegistrationController {
         return "registration";
     }
 
-    @PostMapping
+    /*@PostMapping
     public String processRegistration(RegistrationForm form){
         userRepository.save(form.toUser(passwordEncoder));
         return "redirect:/login";
-    }
+    }*/
 }
