@@ -25,7 +25,7 @@
     <span  th:text="${totalpages}" ></span>
 </div>
 </form>
-<label> Название|IP-адрес|Зона обслуживания</label>
+<label> Название|IP-адрес|Зона обслуживания|Пользователь</label>
 <!--<form method="POST" th:action="@{/select}" th:object="${transformerSubst}">-->
 <!--<form method="POST" th:action="@{/select}" th:object="${currentSubst}">-->
 <form method="POST" th:action="@{/select}" >
@@ -37,9 +37,9 @@
         <span>|</span>
         <span th:text="${transformerSubst.IP}"> IP.IP </span>
         <span>|</span>
-        <span th:text="${transformerSubst.zone}"> TPZONE </span><br/>
+        <span th:text="${transformerSubst.zone}"> TPZONE </span>
         <span>|</span>
-        <!--<span th:text="${transformerSubst.user}"> USER </span><br/>-->
+        <span th:text="${transformerSubst.user.username}"> USER </span><br/>
     </div>
     <div>
         <button type="submit" name="edit" value="1">Редактировать выбранную подстанцию</button>
