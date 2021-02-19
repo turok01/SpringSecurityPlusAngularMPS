@@ -29,11 +29,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
         .and()
                 .oauth2Login()
-                .loginPage("/oauth_login");
+                .loginPage("/oauth_login")
+                .successHandler(successHandler());
                 //.formLogin().loginPage("/login")
                 //.defaultSuccessUrl("/select", true)
         /*.and()
                 .logout().logoutSuccessUrl("/login");*/
 
+    }
+    @Bean
+    public CustomSuccessHandler successHandler() {
+        return new CustomSuccessHandler();
     }
 }
