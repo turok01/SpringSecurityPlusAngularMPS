@@ -1,5 +1,6 @@
 package com.Igor.SpringMPS.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +12,8 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
 @Configuration
 //@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private CustomOidcUserService customOidcUserService;
 
     @Bean
     public PasswordEncoder encoder(){
@@ -30,7 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
                 .oauth2Login()
                 .loginPage("/oauth_login")
-                .successHandler(successHandler());
+                .successHandler(successHandler())
+        .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .oidcUserService(customOidcUserService);;
                 //.formLogin().loginPage("/login")
                 //.defaultSuccessUrl("/select", true)
         /*.and()

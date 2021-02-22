@@ -27,8 +27,10 @@ public class User implements UserDetails {
 
     //private final String username;
     //private final String password;
+    private String name;
     private String username;
     private String password;
+    private String email;
 
 
     @Override

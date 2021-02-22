@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
@@ -33,7 +34,14 @@ public class CustomSuccessHandler extends SavedRequestAwareAuthenticationSuccess
 
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if ((!(auth instanceof AnonymousAuthenticationToken)) && auth != null) {
+        if (authentication.getPrincipal() instanceof OidcUser) {
+            OidcUser principal = ((OidcUser) authentication.getPrincipal());
+            username = principal.getName();
+            useremail = principal.getEmail();
+
+        }
+
+        /*if ((!(auth instanceof AnonymousAuthenticationToken)) && auth != null) {
             User user = (User)auth.getPrincipal();
 
             if (user != null) {
@@ -44,7 +52,7 @@ public class CustomSuccessHandler extends SavedRequestAwareAuthenticationSuccess
             } else {
                 username = "ANONYMOUS";
             }
-        }
+        }*/
 
 
         //username = authentication.getPrincipal().getClass();
