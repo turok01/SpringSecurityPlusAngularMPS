@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
@@ -20,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 public class CustomSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
     @Autowired
@@ -34,6 +36,14 @@ public class CustomSuccessHandler extends SavedRequestAwareAuthenticationSuccess
 
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() instanceof OAuth2User) {
+            OAuth2User principal = ((OAuth2User) authentication.getPrincipal());
+            username = principal.getName();
+            Map <String, Object> attributesMap = principal.getAttributes();
+            username = attributesMap.get("name").toString();
+            useremail = attributesMap.get("email").toString();
+
+        }
         if (authentication.getPrincipal() instanceof OidcUser) {
             OidcUser principal = ((OidcUser) authentication.getPrincipal());
             username = principal.getName();

@@ -35,9 +35,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/oauth_login")
                 .successHandler(successHandler())
         .and()
+                //register user-defined OuidcUserService
                 .oauth2Login()
                 .userInfoEndpoint()
-                .oidcUserService(customOidcUserService);;
+                .oidcUserService(customOidcUserService);
                 //.formLogin().loginPage("/login")
                 //.defaultSuccessUrl("/select", true)
         /*.and()

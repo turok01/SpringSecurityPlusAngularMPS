@@ -30,16 +30,17 @@ public class CustomOidcUserService extends OidcUserService {
     }
 
     private OidcUser processOidcUser(OidcUserRequest userRequest, OidcUser oidcUser) {
-        User newUser = new User();
-        User user;
+
+        //User user;
 
         OidcUserInfo oidcUserInfo = new OidcUserInfo(oidcUser.getAttributes());
-
         // see what other data from userRequest or oidcUser you need
 
         //Optional<User> userOptional = userRepository.findByEmail(oidcUserInfo.getEmail());
-        user = userRepository.findByEmail(oidcUserInfo.getEmail());
-        if (user==null) {
+        Optional<User> userOptional = Optional.ofNullable(userRepository.findByEmail(oidcUserInfo.getEmail()));
+        //user = userRepository.findByEmail(oidcUserInfo.getEmail());
+        if (!userOptional.isPresent()) {
+            User newUser = new User();
             newUser.setEmail(oidcUserInfo.getEmail());
             newUser.setName(oidcUserInfo.getName());
 
