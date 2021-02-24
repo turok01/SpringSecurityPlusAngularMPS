@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 //@EnableWebSecurity
@@ -33,7 +34,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
                 .oauth2Login()
                 .loginPage("/oauth_login")
-                .successHandler(successHandler());
+                .successHandler(successHandler())
+        .and()
+                .logout()
+                .invalidateHttpSession(true)
+                .clearAuthentication(true).logoutSuccessUrl("/oauth_login?logout").deleteCookies("JSESSIONID").permitAll().and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
         /*.and()
                 //register user-defined OuidcUserService
                 .oauth2Login()
