@@ -3,11 +3,13 @@ package com.Igor.SpringMPS.controller;
 import com.Igor.SpringMPS.ListTransformerSubst;
 import com.Igor.SpringMPS.TempTransformerSubst;
 import com.Igor.SpringMPS.data.TransformerRepository;
+import com.Igor.SpringMPS.data.UserRepository;
 import com.Igor.SpringMPS.entities.TransformerSubst;
 import com.Igor.SpringMPS.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -23,10 +25,13 @@ import java.util.Optional;
 @RequestMapping("/edit")
 //@SessionAttributes("currentSubst")
 public class EditController {
+
+    private UserRepository userRepository;
     private TransformerRepository transformerRepo;
     @Autowired
-    public EditController (TransformerRepository transformerRepo){
+    public EditController (TransformerRepository transformerRepo, UserRepository userRepository){
         this.transformerRepo = transformerRepo;
+        this.userRepository = userRepository;
     }
 
     @ModelAttribute("currentSubst")
@@ -48,17 +53,22 @@ public class EditController {
         return "current";
     }
     @PostMapping("/current")
-    public String editSubstForm(@Valid @ModelAttribute("currentSubst") TransformerSubst tp,
+    public String editSubstForm(@Valid @ModelAttribute("currentSubst") TransformerSubst transformerSubst,
                                 Errors errors, Model model,
-                                @AuthenticationPrincipal User user){
+                                //@AuthenticationPrincipal User user){
+                                @AuthenticationPrincipal OidcUser oidcUser) {
         if (errors.hasErrors()) {
             return "current";
         }
-        log.info("Add new Subst Form " + tp);
-        tp.setUser(user);
-        //tp.setId((Integer)(model.getAttribute("currentId")));
-        transformerRepo.save(tp);
-        //return "current";
+        log.info("Add new Subst Form " + transformerSubst);
+
+        User user;
+        user =  userRepository.findByEmail(oidcUser.getEmail());
+        //need check not null?
+
+        transformerSubst.setUser(user);
+        transformerRepo.save(transformerSubst);
+
         return "successful";
     }
 }

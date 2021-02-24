@@ -41,12 +41,12 @@ public class AddNewContoller {
     public String processAdd(@Valid @ModelAttribute("newSubst") TransformerSubst transformerSubst,
                              Errors errors, Model model,
                              //@AuthenticationPrincipal User user){
-                             @AuthenticationPrincipal OidcUser principal) {
+                             @AuthenticationPrincipal OidcUser oidcUser) {
         if(errors.hasErrors()) {
             return "addnew";
         }
         User user;
-        user =  userRepository.findByEmail(principal.getEmail());
+        user =  userRepository.findByEmail(oidcUser.getEmail());
         //need check not null?
 
         transformerSubst.setUser(user);
