@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
+//class not used
 public class CustomSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
     @Autowired
     private UserRepository userRepository;

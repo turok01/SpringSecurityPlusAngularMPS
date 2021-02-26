@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
                 .oauth2Login()
                 .loginPage("/oauth_login")
-                .successHandler(successHandler())
+                //.successHandler(successHandler()) //*1
         .and()
                 .logout()
                 .invalidateHttpSession(true)
@@ -53,8 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().logoutSuccessUrl("/login");*/
 
     }
-    @Bean
+    /*@Bean //*1
     public CustomSuccessHandler successHandler() {
         return new CustomSuccessHandler();
     }
+     */
 }
