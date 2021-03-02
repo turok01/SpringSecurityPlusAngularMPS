@@ -1,19 +1,22 @@
 package com.Igor.SpringMPS.entities;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
-@Data
+@Data //delete because Lombok toString() cyclic call
 @RequiredArgsConstructor
 //@NoArgsConstructor //(access = AccessLevel.PRIVATE, force = true)
 @Entity
 @Table (name = "transformersubstations")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class TransformerSubst implements Serializable {
     @Id
     //@GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,8 +31,11 @@ public class TransformerSubst implements Serializable {
     @NotBlank(message = "Необходимо указать зону обслуживания подстанции")
     private String zone;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="user_id")//,referencedColumnName = "id")
+    //@JsonManagedReference
+
+    //@ManyToOne(fetch=FetchType.LAZY) //if use LAZY, in JSON we get SerializationFeature.FAIL_ON_EMPTY_BEANS
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="user_id",referencedColumnName = "id")
     private User user;
 
 }

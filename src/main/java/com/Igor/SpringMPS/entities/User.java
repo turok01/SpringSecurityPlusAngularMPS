@@ -1,9 +1,10 @@
 package com.Igor.SpringMPS.entities;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,9 +16,12 @@ import java.util.List;
 
 @Entity
 @Table (name = "user_table")
-@Data
+@Data //delete because Lombok toString() cyclic call
 @NoArgsConstructor//(access = AccessLevel.PRIVATE, force=true)
 //@RequiredArgsConstructor
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
 
@@ -58,6 +62,8 @@ public class User implements UserDetails {
         return true;
     }
 
+    //@JsonBackReference
     @OneToMany(mappedBy = "user")
+    //@JsonIgnore
     private List<TransformerSubst> transformerSubstList;
 }

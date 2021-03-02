@@ -28,7 +28,10 @@ public class RestSelectController {
     @GetMapping("/select")
     //@GetMapping("/select")
     public Collection<TransformerSubst> restSelect(){
-        return transformerRepo.findAll();
+        Collection<TransformerSubst> transformerSubstCollection = transformerRepo.findAll();
+        return transformerSubstCollection;
+        //return transformerRepo.findAll();
+
         //return transformerRepo.findAll().stream().collect(Collectors.toList());
     }
     @GetMapping("/recent")
