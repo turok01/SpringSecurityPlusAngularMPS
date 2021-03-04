@@ -38,7 +38,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
                 .logout()
                 .invalidateHttpSession(true)
-                .clearAuthentication(true).logoutSuccessUrl("/oauth_login?logout").deleteCookies("JSESSIONID").permitAll().and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                .clearAuthentication(true).logoutSuccessUrl("/oauth_login?logout").deleteCookies("JSESSIONID").permitAll().and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        .and()
+                .oauth2ResourceServer()
+                .jwt(); // this is a resource server, with jwt()-formatted tokens
         /*.and()
                 //register user-defined OuidcUserService
                 .oauth2Login()
